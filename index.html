@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promoción 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* (Mantener todos los estilos anteriores, solo ajustaré la parte del buzón) */
+    /* ... copiar los mismos estilos de arriba ... */
+    /* Pero para simplificar, pego todo el bloque de estilos que ya teníamos */
+    @font-face {
+      font-family: 'Starborn';
+      src: url('Starborn.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Relife';
+      src: url('Relife.ttf') format('truetype');
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .contenedor {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .flor {
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+    }
+    #flor1 { width: 230px; top: 7%; left: 7%; }
+    #flor2 { width: 250px; top: 23%; right: 42%; }
+    #flor3 { width: 400px; bottom: -15%; left: -4%; }
+    #flor4 { width: 300px; bottom: -2%; right: -2%; }
+
+    .vista {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      display: none;
+      overflow-y: auto;
+    }
+
+    .vista.activa {
+      display: block;
+    }
+
+    #vista-principal {
+      background: transparent;
+    }
+
+    .titulo {
+      position: absolute;
+      font-family: 'Starborn', serif;
+      z-index: 2;
+    }
+    .titulo .prom {
+      font-size: 8rem;
+      margin: 0;
+      color: azure;
+      line-height: 0.8;
+    }
+    .titulo .anio {
+      font-size: 7rem;
+      margin: 0;
+      color: azure;
+      line-height: 0.8;
+    }
+
+    .boton {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .boton img {
+      width: 100px;
+      height: auto;
+    }
+    .boton span {
+      font-family: 'Relife', serif;
+      font-size: 3rem;
+      color: white;
+    }
+    .boton:hover {
+      transform: scale(1.1);
+    }
+
+    .boton-icono-adelante {
+      flex-direction: row;
+    }
+    .boton-texto-adelante {
+      flex-direction: row-reverse;
+    }
+
+    .vista-secundaria {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(3px);
+      color: white;
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
+      max-width: 800px;
+      margin: 40px auto;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .vista-secundaria h2 {
+      font-family: 'Starborn', serif;
+      font-size: 4rem;
+      margin-bottom: 30px;
+      color: azure;
+    }
+
+    .btn-volver {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 10px 25px;
+      border-radius: 40px;
+      color: white;
+      font-family: 'Relife', serif;
+      font-size: 2rem;
+      cursor: pointer;
+      margin-bottom: 30px;
+      transition: 0.3s;
+    }
+    .btn-volver:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.05);
+    }
+    .btn-volver img {
+      width: 30px;
+      filter: invert(1);
+    }
+
+    /* Estilos específicos del buzón (simplificados) */
+    .login-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .login-box {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .login-box input {
+      padding: 8px 12px;
+      border-radius: 20px;
+      border: none;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .login-box button {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: none;
+      background: #ffd700;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info span {
+      color: #ffd700;
+    }
+
+    .cerrar-sesion {
+      background: transparent;
+      border: 1px solid #ffd700;
+      color: #ffd700;
+      padding: 5px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .mensajes-lista {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+    }
+
+    .mensaje-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-left: 3px solid #ffd700;
+    }
+
+    .mensaje-fecha {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+
+    .mensaje-ip {
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 5px;
+      font-family: monospace;
+    }
+
+    .mensaje-texto {
+      font-size: 1.2rem;
+      word-wrap: break-word;
+    }
+
+    .formulario-mensaje {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .formulario-mensaje textarea {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      font-size: 1rem;
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .formulario-mensaje button {
+      align-self: flex-end;
+      padding: 10px 30px;
+      border-radius: 30px;
+      border: none;
+      background: #ffd700;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Media queries (igual que antes) */
+    @media (min-width: 769px) {
+      .titulo {
+        top: 38%;
+        left: 12%;
+        text-align: left;
+      }
+      .titulo .anio {
+        margin-left: 300px;
+      }
+
+      #boton-avisos, #boton-cargos {
+        flex-direction: row-reverse;
+      }
+      #boton-buzon, #boton-Actividades {
+        flex-direction: row;
+      }
+
+      #boton-avisos {
+        position: absolute;
+        top: 10%;
+        right: 8%;
+      }
+      #boton-cargos {
+        position: absolute;
+        top: 50%;
+        right: 8%;
+      }
+      #boton-buzon {
+        position: absolute;
+        top: 30%;
+        right: 8%;
+      }
+      #boton-Actividades {
+        position: absolute;
+        top: 70%;
+        right: 8%;
+      }
+
+      .boton img {
+        width: 120px;
+      }
+
+      .vista-secundaria {
+        width: 60%;
+      }
+    }
+
+    @media (max-width: 728px){
+      .titulo {
+        top: 30%;
+        left: 10%;
+        white-space: nowrap;
+      }
+      .titulo .prom {
+        font-size: 5rem;
+        margin-left: -10%;
+      }
+      .titulo .anio {
+        font-size: 4rem;
+        left: 60px;
+        margin-left: 35%;
+      }
+
+      #flor1 { width: 150px; top: 2%; left: 2%; }
+      #flor2 { width: 100px; top: 43%; right: 60%; }
+      #flor3 { width: 200px; top: -5%; left: 70%; transform: rotate(180deg); }
+      #flor4 { width: 320px; bottom: -10%; right: -25%; }
+
+      .boton-icono-adelante {
+        flex-direction: row-reverse;
+      }
+      .boton-texto-adelante {
+        flex-direction: row-reverse;
+      }
+
+      #boton-avisos {
+        position: absolute;
+        top: 55%;
+        right: 5%;
+      }
+      #boton-buzon {
+        position: absolute;
+        top: 63%;
+        left: 5%;
+      }
+      #boton-cargos {
+        position: absolute;
+        bottom: 15%;
+        right: 5%;
+      }
+      #boton-Actividades {
+        position: absolute;
+        bottom: 6%;
+        left: 5%;
+      }
+
+      .boton img {
+        width: 70px;
+      }
+      .boton span {
+        font-size: 2.2rem;
+      }
+
+      .vista-secundaria {
+        width: 95%;
+        padding: 15px;
+        margin: 20px auto;
+      }
+
+      .vista-secundaria h2 {
+        font-size: 3rem;
+      }
+
+      .login-box {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <!-- Flores -->
+    <img src="FT3.png" id="flor1" class="flor" alt="Flor metálica">
+    <img src="FSL.png" id="flor2" class="flor" alt="Flor metálica">
+    <img src="FGR.png" id="flor3" class="flor" alt="Flor metálica">
+    <img src="FES.png" id="flor4" class="flor" alt="Flor metálica">
+
+    <!-- VISTA PRINCIPAL (menú) -->
+    <div id="vista-principal" class="vista activa">
+      <div class="titulo">
+        <h1 class="prom">Prom</h1>
+        <h2 class="anio">2026</h2>
+      </div>
+
+      <div id="boton-avisos" class="boton boton-icono-adelante" onclick="mostrarVista('avisos')">
+        <img src="GAV.png" alt="Avisos"><span>Avisos</span>
+      </div>
+      <div id="boton-buzon" class="boton boton-texto-adelante" onclick="mostrarVista('buzon')">
+        <span>Buzón</span><img src="GMC.png" alt="Buzón">
+      </div>
+      <div id="boton-cargos" class="boton boton-icono-adelante" onclick="mostrarVista('cargos')">
+        <img src="MCA.png" alt="Cargos"><span>Cargos</span>
+      </div>
+      <div id="boton-Actividades" class="boton boton-texto-adelante" onclick="mostrarVista('Actividades')">
+        <span>Actividades</span><img src="MIN.png" alt="Actividades">
+      </div>
+    </div>
+
+    <!-- VISTA AVISOS -->
+    <div id="vista-avisos" class="vista">
+      <div class="vista-secundaria">
+        <div class="btn-volver" onclick="mostrarVista('principal')">
+          <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Volver"> Volver
+        </div>
+        <h2>Avisos</h2>
+        <div style="margin-bottom: 25px; border-left: 3px solid #ffd700; padding-left: 15px;">
+          <div style="font-size:1.8rem; color:#ffd700;">03/02</div>
+          <div style="font-size:1.5rem;">Se inicia el mundialito, próximamente premiación a mejor curso culturalmente</div>
+        </div>
+        <div style="margin-bottom: 25px; border-left: 3px solid #ffd700; padding-left: 15px;">
+          <div style="font-size:1.8rem; color:#ffd700;">15/03</div>
+          <div style="font-size:1.5rem;">INFORMACIÓN</div>
+        </div>
+        <div style="margin-bottom: 25px; border-left: 3px solid #ffd700; padding-left: 15px;">
+          <div style="font-size:1.8rem; color:#ffd700;">20/03</div>
+          <div style="font-size:1.5rem;">INFORMACIÓN</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISTA BUZÓN (simplificado: solo mensajes privados con IP) -->
+    <div id="vista-buzon" class="vista">
+      <div class="vista-secundaria">
+        <div class="btn-volver" onclick="mostrarVista('principal')">
+          <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Volver"> Volver
+        </div>
+        <h2>Buzón</h2>
+
+        <!-- Login / Admin -->
+        <div id="login-container" class="login-container"></div>
+
+        <!-- Lista de mensajes (visible solo para admin) -->
+        <div id="mensajes-lista" class="mensajes-lista" style="display: none;"></div>
+
+        <!-- Formulario para enviar mensaje (visible para todos) -->
+        <div class="formulario-mensaje">
+          <textarea id="nuevo-mensaje" placeholder="Escribe tu mensaje anónimo (solo el admin lo verá)"></textarea>
+          <button onclick="enviarMensaje()">Enviar mensaje</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISTA CARGOS -->
+    <div id="vista-cargos" class="vista">
+      <div class="vista-secundaria">
+        <div class="btn-volver" onclick="mostrarVista('principal')">
+          <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Volver"> Volver
+        </div>
+        <h2>Cargos</h2>
+        <p>Roles y responsabilidades.</p>
+      </div>
+    </div>
+
+    <!-- VISTA INVERSIONES -->
+    <div id="vista-Actividades" class="vista">
+      <div class="vista-secundaria">
+        <div class="btn-volver" onclick="mostrarVista('principal')">
+          <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Volver"> Volver
+        </div>
+        <h2>Actividades</h2>
+        <p>Detalles financieros.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==================== CONFIGURACIÓN ====================
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = '1234';
+
+    let isAdmin = false;
+    let mensajes = []; // cada mensaje: { texto, fecha, ip }
+
+    // Cargar mensajes de localStorage
+    function cargarMensajes() {
+      const stored = localStorage.getItem('mensajesBuzon');
+      if (stored) {
+        mensajes = JSON.parse(stored);
+      } else {
+        mensajes = [];
+        guardarMensajes();
+      }
+    }
+
+    function guardarMensajes() {
+      localStorage.setItem('mensajesBuzon', JSON.stringify(mensajes));
+    }
+
+    // Obtener IP pública (usando api.ipify.org)
+    async function obtenerIP() {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+      } catch (error) {
+        console.error('Error obteniendo IP:', error);
+        return 'No disponible';
+      }
+    }
+
+    // Enviar mensaje (con IP)
+    async function enviarMensaje() {
+      const texto = document.getElementById('nuevo-mensaje').value.trim();
+      if (!texto) return alert('Escribe un mensaje');
+
+      const ip = await obtenerIP();
+      const nuevoMensaje = {
+        texto,
+        fecha: new Date().toLocaleString(),
+        ip: ip
+      };
+      mensajes.push(nuevoMensaje);
+      guardarMensajes();
+      document.getElementById('nuevo-mensaje').value = '';
+
+      // Si el admin está logueado, refrescar la lista
+      if (isAdmin) {
+        renderizarMensajes();
+      } else {
+        alert('Mensaje enviado (solo visible para el admin)');
+      }
+    }
+
+    // Renderizar mensajes (solo para admin)
+    function renderizarMensajes() {
+      const lista = document.getElementById('mensajes-lista');
+      if (!lista) return;
+
+      if (mensajes.length === 0) {
+        lista.innerHTML = '<p style="text-align:center; color:#aaa;">No hay mensajes</p>';
+        return;
+      }
+
+      let html = '';
+      mensajes.forEach(m => {
+        html += `
+          <div class="mensaje-item">
+            <div class="mensaje-fecha">${m.fecha}</div>
+            <div class="mensaje-ip">IP: ${m.ip}</div>
+            <div class="mensaje-texto">${m.texto}</div>
+          </div>
+        `;
+      });
+      lista.innerHTML = html;
+    }
+
+    // Login / Logout
+    function mostrarLogin() {
+      const container = document.getElementById('login-container');
+      const lista = document.getElementById('mensajes-lista');
+
+      if (isAdmin) {
+        container.innerHTML = `
+          <div class="user-info">
+            <span>👑 Admin</span>
+            <button class="cerrar-sesion" onclick="logout()">Cerrar sesión</button>
+          </div>
+        `;
+        lista.style.display = 'block';
+        renderizarMensajes();
+      } else {
+        container.innerHTML = `
+          <div class="login-box">
+            <input type="text" id="username" placeholder="Usuario" value="admin">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button onclick="login()">Ingresar</button>
+          </div>
+        `;
+        lista.style.display = 'none';
+      }
+    }
+
+    function login() {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        isAdmin = true;
+        mostrarLogin();
+      } else {
+        alert('Credenciales incorrectas');
+      }
+    }
+
+    function logout() {
+      isAdmin = false;
+      mostrarLogin();
+    }
+
+    // Inicializar buzón
+    function inicializarBuzon() {
+      cargarMensajes();
+      mostrarLogin();
+    }
+
+    // Control de vistas
+    function mostrarVista(vistaId) {
+      document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+      if (vistaId === 'principal') {
+        document.getElementById('vista-principal').classList.add('activa');
+      } else {
+        document.getElementById(`vista-${vistaId}`).classList.add('activa');
+        if (vistaId === 'buzon') {
+          inicializarBuzon();
+        }
+      }
+    }
+
+    window.onload = () => {
+      mostrarVista('principal');
+    };
+  </script>
+</body>
+</html>

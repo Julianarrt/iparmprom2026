@@ -1,0 +1,60 @@
+/* Tipografía global */
+body {
+  font-family: "Homemade Apple", cursive;
+  font-weight: 400;
+  font-style: normal;
+  background-color: #000; /* fondo negro */
+  color: #fff; /* texto blanco */
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Encabezado */
+header {
+  padding: 2rem;
+  background: linear-gradient(90deg, rgb(80, 13, 114), rgb(233, 233, 170));
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+/* Menú de íconos */
+.icon-menu {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.icon-menu a {
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.icon-menu a:hover {
+  transform: scale(1.1);
+}
+
+.icon-menu img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 0.5rem;
+}
+
+/* Secciones */
+section {
+  padding: 4rem 2rem;
+  border-top: 1px solid #444;
+}
+
+section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
