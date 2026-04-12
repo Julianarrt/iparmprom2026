@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Promoción 2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -69,112 +69,7 @@
     .splash-hidden {
       display: none !important;
     }
-/* Botón login pequeño */
-.btn-login-mini {
-  background: #c88df8cc;
-  color: black;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 30px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.3s;
-  position: absolute;
-  z-index: 30;
-}
-/* PC: arriba derecha */
-@media (min-width: 769px) {
-  .btn-login-mini { top: 20px; right: 20px; }
-}
-/* Móvil: abajo derecha */
-@media (max-width: 700px) {
-  .btn-login-mini { bottom: 20px; right: 20px; }
-}
-.btn-login-mini:hover { background: #c88df8cc; transform: scale(1.05); }
 
-/* Modal (burbuja) */
-.modal-login {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.modal-content {
-  background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 25px;
-  width: 280px;
-  text-align: center;
-  border: 1px solid #c88df8;
-  position: relative;
-}
-.modal-content h3 {
-  font-family: 'Starborn', serif;
-  color: #c88df8;
-  margin-bottom: 20px;
-}
-.modal-content input {
-  width: 100%;
-  padding: 8px;
-  margin: 8px 0;
-  border-radius: 30px;
-  border: 1px solid #aaa;
-  background: #222;
-  color: white;
-}
-.modal-content button {
-  background: #c88df8cc;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 30px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-}
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  cursor: pointer;
-  color: white;
-}
-.close-modal:hover { color: rgb(199, 140, 248); }
-
-/* Área de usuario logueado (similar al estilo anterior) */
-.user-info-area {
-  position: absolute;
-  z-index: 30;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-  padding: 6px 15px;
-  border-radius: 40px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-@media (min-width: 769px) {
-  .user-info-area { top: 20px; right: 20px; }
-}
-@media (max-width: 700px) {
-  .user-info-area { bottom: 20px; right: 20px; }
-}
-.user-info-area span { color: #c88df8; }
-.user-info-area .cerrar-sesion {
-  background: transparent;
-  border: 1px solid #c88df8;
-  color: #c88df8;
-  padding: 4px 12px;
-  border-radius: 30px;
-  cursor: pointer;
-}
     /* ===== ANIMACIONES FLORES ===== */
     @keyframes levitar {
       0% { transform: translateY(0px); }
@@ -300,63 +195,48 @@
     }
     .btn-volver img { width: 30px; filter: invert(1); }
 
-    /* ===== LOGIN FLOTANTE (SOLO EN VISTA PRINCIPAL) ===== */
-    #vista-principal .login-container {
-      position: absolute;
-      z-index: 30;
-    }
-    /* PC: arriba derecha */
-    @media (min-width: 769px) {
-      #vista-principal .login-container {
-        top: 20px;
-        right: 20px;
-      }
-    }
-    /* Móvil: abajo derecha */
-    @media (max-width: 720px) {
-      #vista-principal .login-container {
-        bottom: 20px;
-        right: 20px;
-      }
-    }
-
-    .login-box {
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(8px);
-      border-radius: 40px;
-      padding: 8px 15px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      border: 1px solid rgba(255,255,255,0.3);
-    }
-    .login-box input {
-      padding: 6px 12px;
-      border-radius: 30px;
-      border: none;
-      background: rgba(255,255,255,0.2);
-      color: white;
-    }
-    .login-box button {
-      padding: 6px 15px;
-      border-radius: 30px;
-      border: none;
+    /* ===== LOGIN FLOTANTE (FIXED) ===== */
+    .btn-login-mini {
+      position: fixed;
+      z-index: 9999;
       background: #c88df8cc;
       color: black;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-family: 'Roboto', sans-serif;
       font-weight: bold;
+      font-size: 1rem;
       cursor: pointer;
+      transition: 0.3s;
     }
-    .user-info {
+    @media (min-width: 769px) {
+      .btn-login-mini { top: 10%; left: 5%; }
+    }
+    @media (max-width: 720px) {
+      .btn-login-mini { bottom: 20px; right: 20px; }
+    }
+    .btn-login-mini:hover { background: #b77de0; transform: scale(1.05); }
+
+    .user-info-area {
+      position: fixed;
+      z-index: 9999;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      padding: 6px 15px;
+      border-radius: 40px;
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(0,0,0,0.6);
-      padding: 6px 15px;
-      border-radius: 40px;
-      backdrop-filter: blur(4px);
     }
-    .user-info span { color: #c88df8; }
-    .cerrar-sesion {
+    @media (min-width: 769px) {
+      .user-info-area { top: 20px; right: 20px; }
+    }
+    @media (max-width: 720px) {
+      .user-info-area { bottom: 20px; right: 20px; }
+    }
+    .user-info-area span { color: #c88df8; }
+    .user-info-area .cerrar-sesion {
       background: transparent;
       border: 1px solid #c88df8;
       color: #c88df8;
@@ -364,6 +244,60 @@
       border-radius: 30px;
       cursor: pointer;
     }
+
+    /* Modal */
+    .modal-login {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      width: 280px;
+      text-align: center;
+      border: 1px solid #c88df8;
+      position: relative;
+    }
+    .modal-content h3 {
+      font-family: 'Starborn', serif;
+      color: #c88df8;
+      margin-bottom: 20px;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border-radius: 30px;
+      border: 1px solid #aaa;
+      background: #222;
+      color: white;
+    }
+    .modal-content button {
+      background: #c88df8cc;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+    .close-modal:hover { color: #c88df8; }
 
     /* ===== BUZÓN: mensajes y formulario ===== */
     .mensajes-lista {
@@ -379,10 +313,10 @@
       border-radius: 10px;
       padding: 15px;
       margin-bottom: 10px;
-      border-left: 3px solid rgba(200, 141, 248, 0.8);
+      border-left: 3px solid #c88df8;
     }
-    .mensaje-fecha { font-size: 0.9rem; color: #c88df8cc; margin-bottom: 5px; }
-    .mensaje-ip { font-size: 0.8rem; color: #c88df8cc; margin-bottom: 5px; font-family: monospace; }
+    .mensaje-fecha { font-size: 0.9rem; color: #c88df8; margin-bottom: 5px; }
+    .mensaje-ip { font-size: 0.8rem; color: #aaa; margin-bottom: 5px; font-family: monospace; }
     .mensaje-texto { font-size: 1.2rem; word-wrap: break-word; }
     .formulario-mensaje {
       display: flex;
@@ -491,7 +425,6 @@
   <div id="splash">
     <video id="introVideo" autoplay muted playsinline>
       <source src="splash.mp4" type="video/mp4">
-      <!-- video de respaldo si no existe splash.mp4 -->
       <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
     </video>
     <button class="skip-btn" onclick="ocultarSplash()">Saltar introducción</button>
@@ -504,14 +437,12 @@
     <img src="FGR.png" id="flor3" class="flor levitar" alt="Flor">
     <img src="FES.png" id="flor4" class="flor levitar" alt="Flor">
 
-    <!-- VISTA PRINCIPAL (menú) con LOGIN FLOTANTE -->
+    <!-- VISTA PRINCIPAL (menú) -->
     <div id="vista-principal" class="vista activa">
       <div class="titulo">
         <h1 class="prom">Prom</h1>
         <h2 class="anio">2026</h2>
       </div>
-      <!-- Login flotante (fuera de la burbuja) -->
-      <div id="login-container" class="login-container"></div>
       <!-- Botones -->
       <div id="boton-avisos" class="boton boton-icono-adelante" onclick="mostrarVista('avisos')">
         <img src="GAV.png" alt="Avisos"><span>Avisos</span>
@@ -526,51 +457,48 @@
         <span>Actividades</span><img src="MIN.png" alt="Actividades">
       </div>
     </div>
-    <!-- Botón para abrir login -->
-<button id="btn-login" class="btn-login-mini">👤 Admin</button>
 
-<!-- Modal (burbuja) para login -->
-<div id="modal-login" class="modal-login" style="display: none;">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <h3>Acceso Admin</h3>
-    <input type="text" id="username" placeholder="Usuario" value="admin">
-    <input type="password" id="password" placeholder="Contraseña">
-    <button id="ingresar-admin">Ingresar</button>
-  </div>
-</div>
+    <!-- Elementos flotantes de login (fuera de las vistas) -->
+    <button id="btn-login" class="btn-login-mini">👤 Admin</button>
+    <div id="user-info-area" class="user-info-area" style="display: none;"></div>
 
-<!-- Aquí irá el mensaje de bienvenida cuando esté logueado -->
-<div id="user-info-area" class="user-info-area" style="display: none;"></div>
+    <!-- Modal login -->
+    <div id="modal-login" class="modal-login" style="display: none;">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Acceso Admin</h3>
+        <input type="text" id="username" placeholder="Usuario" value="admin">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button id="ingresar-admin">Ingresar</button>
+      </div>
+    </div>
 
     <!-- VISTA AVISOS -->
     <div id="vista-avisos" class="vista">
       <div class="vista-secundaria">
         <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
         <h2>Avisos</h2>
-        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8cc; padding-left: 15px;">
-          <div style="font-size:1.8rem; color:#c88df8cc;">03/02</div>
+        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8; padding-left: 15px;">
+          <div style="font-size:1.8rem; color:#c88df8;">03/02</div>
           <div style="font-size:1.5rem;">Se inicia el mundialito, próximamente premiación a mejor curso culturalmente</div>
         </div>
-        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8cc; padding-left: 15px;">
-          <div style="font-size:1.8rem; color:#c88df8cc;">15/03</div>
+        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8; padding-left: 15px;">
+          <div style="font-size:1.8rem; color:#c88df8;">15/03</div>
           <div style="font-size:1.5rem;">INFORMACIÓN</div>
         </div>
-        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8cc; padding-left: 15px;">
-          <div style="font-size:1.8rem; color:#c88df8cc;">20/03</div>
+        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8; padding-left: 15px;">
+          <div style="font-size:1.8rem; color:#c88df8;">20/03</div>
           <div style="font-size:1.5rem;">INFORMACIÓN</div>
         </div>
       </div>
     </div>
 
-    <!-- VISTA BUZÓN (el login NO está aquí) -->
+    <!-- VISTA BUZÓN -->
     <div id="vista-buzon" class="vista">
       <div class="vista-secundaria">
         <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
-        <h2>Buzon</h2>
-        <!-- Lista de mensajes (solo visible para admin) -->
+        <h2>Buzón</h2>
         <div id="mensajes-lista" class="mensajes-lista" style="display: none;"></div>
-        <!-- Formulario para enviar mensaje anónimo -->
         <div class="formulario-mensaje">
           <textarea id="nuevo-mensaje" placeholder="Escribe tu mensaje anónimo (solo el admin lo verá)"></textarea>
           <button onclick="enviarMensaje()">Enviar mensaje</button>
@@ -610,7 +538,7 @@
     }
     setTimeout(ocultarSplash, 3000);
 
-    // ==================== BUZÓN Y ADMIN ====================
+    // ==================== ADMIN Y BUZÓN ====================
     const ADMIN_USER = 'Amoajp';
     const ADMIN_PASS = '+Fr4nk0-';
     let isAdmin = false;
@@ -659,30 +587,14 @@
       lista.innerHTML = html;
     }
 
-    function mostrarLogin() {
-      const container = document.getElementById('login-container');
-      if (!container) return;
+    function actualizarUIAdmin() {
+      const btnLogin = document.getElementById('btn-login');
+      const userArea = document.getElementById('user-info-area');
       if (isAdmin) {
-        container.innerHTML = `<div class="user-info">
-          <span>👑 ....</span>
-          <button class="cerrar-sesion" onclick="logout()">Cerrar sesión</button>
-        </div>`;
-      } else {
-        container.innerHTML = `<div class="login-box">
-          <input type="text" id="username" placeholder="Usuario" value="admin">
-          <input type="password" id="password" placeholder="Contraseña">
-          <button onclick="login()">Ingresar</button>
-        </div>`;
-      }
-    }
-
-    function login() {
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
-      if (user === ADMIN_USER && pass === ADMIN_PASS) {
-        isAdmin = true;
-        mostrarLogin();
-        // Si estamos en la vista buzón, mostrar mensajes automáticamente
+        btnLogin.style.display = 'none';
+        userArea.style.display = 'flex';
+        userArea.innerHTML = `<span>👑 Admin</span>
+                              <button class="cerrar-sesion" onclick="logout()">Cerrar sesión</button>`;
         const buzónActivo = document.getElementById('vista-buzon').classList.contains('activa');
         if (buzónActivo) {
           const lista = document.getElementById('mensajes-lista');
@@ -692,15 +604,39 @@
           }
         }
       } else {
+        btnLogin.style.display = 'block';
+        userArea.style.display = 'none';
+        const lista = document.getElementById('mensajes-lista');
+        if (lista) lista.style.display = 'none';
+      }
+    }
+
+    function abrirModalLogin() {
+      const modal = document.getElementById('modal-login');
+      if (modal) modal.style.display = 'flex';
+    }
+    function cerrarModalLogin() {
+      const modal = document.getElementById('modal-login');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function loginDesdeModal() {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        isAdmin = true;
+        cerrarModalLogin();
+        actualizarUIAdmin();
+        document.getElementById('username').value = 'admin';
+        document.getElementById('password').value = '';
+      } else {
         alert('Credenciales incorrectas');
       }
     }
 
     function logout() {
       isAdmin = false;
-      mostrarLogin();
-      const lista = document.getElementById('mensajes-lista');
-      if (lista) lista.style.display = 'none';
+      actualizarUIAdmin();
     }
 
     function inicializarBuzon() {
@@ -724,82 +660,18 @@
       }
     }
 
+    // ==================== EVENTOS AL CARGAR ====================
     window.onload = () => {
       mostrarVista('principal');
-      mostrarLogin();
+      actualizarUIAdmin();
+      document.getElementById('btn-login').onclick = abrirModalLogin;
+      document.getElementById('ingresar-admin').onclick = loginDesdeModal;
+      document.querySelector('.close-modal').onclick = cerrarModalLogin;
+      window.onclick = (e) => {
+        const modal = document.getElementById('modal-login');
+        if (e.target === modal) cerrarModalLogin();
+      };
     };
-// Mostrar el botón de login o el área de usuario según estado
-function actualizarUIAdmin() {
-  const btnLogin = document.getElementById('btn-login');
-  const userArea = document.getElementById('user-info-area');
-  if (isAdmin) {
-    btnLogin.style.display = 'none';
-    userArea.style.display = 'flex';
-    userArea.innerHTML = `<span>👑 ...</span>
-                          <button class="cerrar-sesion" onclick="logout()">Cerrar sesión</button>`;
-    // Si estamos en el buzón, mostrar mensajes
-    const buzónActivo = document.getElementById('vista-buzon').classList.contains('activa');
-    if (buzónActivo) {
-      const lista = document.getElementById('mensajes-lista');
-      if (lista) {
-        lista.style.display = 'block';
-        renderizarMensajes();
-      }
-    }
-  } else {
-    btnLogin.style.display = 'block';
-    userArea.style.display = 'none';
-    // Ocultar lista de mensajes
-    const lista = document.getElementById('mensajes-lista');
-    if (lista) lista.style.display = 'none';
-  }
-}
-
-// Abrir modal
-function abrirModalLogin() {
-  const modal = document.getElementById('modal-login');
-  if (modal) modal.style.display = 'flex';
-}
-function cerrarModalLogin() {
-  const modal = document.getElementById('modal-login');
-  if (modal) modal.style.display = 'none';
-}
-
-// Login desde el modal
-function loginDesdeModal() {
-  const user = document.getElementById('username').value;
-  const pass = document.getElementById('password').value;
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
-    isAdmin = true;
-    cerrarModalLogin();
-    actualizarUIAdmin();
-    // Limpiar campos
-    document.getElementById('username').value = 'admin';
-    document.getElementById('password').value = '';
-  } else {
-    alert('Credenciales incorrectas');
-  }
-}
-
-function logout() {
-  isAdmin = false;
-  actualizarUIAdmin();
-}
-
-// Al cargar la página, configurar eventos
-window.onload = () => {
-  mostrarVista('principal');
-  actualizarUIAdmin();
-  // Asignar eventos al botón y modal
-  document.getElementById('btn-login').onclick = abrirModalLogin;
-  document.getElementById('ingresar-admin').onclick = loginDesdeModal;
-  document.querySelector('.close-modal').onclick = cerrarModalLogin;
-  // Cerrar modal al hacer clic fuera del contenido
-  window.onclick = (e) => {
-    const modal = document.getElementById('modal-login');
-    if (e.target === modal) cerrarModalLogin();
-  };
-};
   </script>
 </body>
 </html>
