@@ -28,10 +28,14 @@
       height: 100vh;
       overflow: hidden;
     }
-    html, body {
+  html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+.contenedor, .vista {
+  height: 100%;
+  min-height: 100%;
 }
 
     /* ===== SPLASH ===== */
@@ -360,13 +364,30 @@
       .titulo .anio { margin-left: 300px; }
       #boton-avisos, #boton-cargos { flex-direction: row-reverse; }
       #boton-buzon, #boton-Actividades { flex-direction: row; }
-      #boton-avisos { position: absolute; top: 10%; right: 8%; }
-      #boton-cargos { position: absolute; top: 50%; right: 8%; }
-      #boton-buzon { position: absolute; top: 30%; right: 8%; }
-      #boton-Actividades { position: absolute; top: 70%; right: 8%; }
+        #boton-avisos {
+    position: absolute;
+    top: 20%;  /* antes 10% */
+    right: 8%;
+  }
+  #boton-buzon {
+    position: absolute;
+    top: 38%;  /* antes 30% */
+    right: 8%;
+  }
+  #boton-cargos {
+    position: absolute;
+    top: 56%;  /* antes 50% */
+    right: 8%;
+  }
+  #boton-Actividades {
+    position: absolute;
+    top: 74%;  /* antes 70% */
+    right: 8%;
+  }
+}
       .boton img { width: 120px; }
       .vista-secundaria { width: 60%; }
-    }
+    
 
     @media (max-width: 720px) {
       .titulo {
@@ -385,10 +406,26 @@
       .boton-icono-adelante { flex-direction: row-reverse; }
       .boton-texto-adelante { flex-direction: row-reverse; }
 
-      #boton-avisos { position: absolute; top: 55%; right: 5%; }
-      #boton-buzon { position: absolute; top: 63%; left: 5%; }
-      #boton-cargos { position: absolute; bottom: 15%; right: 5%; }
-      #boton-Actividades { position: absolute; bottom: 6%; left: 5%; }
+      #boton-avisos {
+    position: absolute;
+    top: 60%;  /* antes 55% - baja un poco */
+    right: 5%;
+  }
+  #boton-buzon {
+    position: absolute;
+    top: 68%;  /* antes 63% */
+    left: 5%;
+  }
+  #boton-cargos {
+    position: absolute;
+    bottom: 18%;  /* antes 15% - lo subimos un poco para no pegarlo al borde */
+    right: 5%;
+  }
+  #boton-Actividades {
+    position: absolute;
+    bottom: 10%;  /* antes 6% */
+    left: 5%;
+  }
 
       .boton img { width: 70px; }
       .boton span { font-size: 2rem; }
