@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Prom 2026</title>
-  <link rel="icon" type="image/png" href="/iconm.png">
+  <title>Promoción 2026</title>
+  <link rel="icon" type="image/png" href="iconm.png">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    /* ===== FUENTES Y RESET ===== */
     @font-face {
       font-family: 'Starborn';
       src: url('Starborn.ttf') format('truetype');
@@ -15,34 +16,23 @@
       font-family: 'Relife';
       src: url('Relife.ttf') format('truetype');
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background-color: black;
+      background: black;
       color: white;
       font-family: 'Roboto', sans-serif;
       height: 100vh;
       overflow: hidden;
     }
-
-.contenedor, .vista {
-  height: 100%;
-  min-height: 100%;
-}
+    html, body { height: 100%; }
+    .contenedor, .vista { height: 100%; }
 
     /* ===== SPLASH ===== */
     #splash {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: black;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
       z-index: 9999;
       display: flex;
       flex-direction: column;
@@ -52,31 +42,22 @@
     #splash video {
       max-width: 90%;
       max-height: 90%;
-      width: auto;
-      height: auto;
       object-fit: contain;
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);
     }
     #splash .skip-btn {
       position: absolute;
-      bottom: 20px;
-      right: 20px;
+      bottom: 20px; right: 20px;
       background: rgba(255,255,255,0.3);
       color: white;
       border: none;
       padding: 8px 16px;
       border-radius: 30px;
       cursor: pointer;
-      font-family: 'Roboto', sans-serif;
-      z-index: 10000;
-      backdrop-filter: blur(4px);
     }
-    .splash-hidden {
-      display: none !important;
-    }
+    .splash-hidden { display: none !important; }
 
-    /* ===== ANIMACIONES FLORES ===== */
+    /* ===== FLORES ===== */
     @keyframes levitar {
       0% { transform: translateY(0px); }
       50% { transform: translateY(-15px); }
@@ -89,13 +70,7 @@
     .levitar { animation: levitar 4s ease-in-out infinite; }
     .girar { animation: girar 20s linear infinite; }
 
-    /* ===== CONTENEDOR PRINCIPAL ===== */
-    .contenedor {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-    }
-
+    .contenedor { position: relative; width: 100%; height: 100%; }
     .flor {
       position: absolute;
       z-index: 1;
@@ -109,22 +84,19 @@
     /* ===== VISTAS ===== */
     .vista {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 10;
       display: none;
       overflow-y: auto;
     }
     .vista.activa { display: block; }
-
     #vista-principal {
       background: transparent;
       position: relative;
     }
 
-    /* Título menú */
+    /* Título */
     .titulo {
       position: absolute;
       font-family: 'Starborn', serif;
@@ -162,17 +134,15 @@
     .boton-icono-adelante { flex-direction: row; }
     .boton-texto-adelante { flex-direction: row-reverse; }
 
-    /* Vistas secundarias (burbujas) */
+    /* Burbujas de contenido */
     .vista-secundaria {
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(3px);
-      color: white;
       padding: 30px;
       border-radius: 20px;
       border: 1px solid rgba(255,255,255,0.2);
       max-width: 800px;
       margin: 40px auto;
-      font-family: 'Roboto', sans-serif;
     }
     .vista-secundaria h2 {
       font-family: 'Starborn', serif;
@@ -193,15 +163,10 @@
       font-size: 2rem;
       cursor: pointer;
       margin-bottom: 30px;
-      transition: 0.3s;
     }
-    .btn-volver:hover {
-      background: rgba(255,255,255,0.2);
-      transform: scale(1.05);
-    }
-    .btn-volver img { width: 30px; filter: invert(1); }
+    .btn-volver:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
-    /* ===== LOGIN FLOTANTE (FIXED) ===== */
+    /* ===== LOGIN FLOTANTE ===== */
     .btn-login-mini {
       position: fixed;
       z-index: 9999;
@@ -210,11 +175,8 @@
       border: none;
       padding: 6px 14px;
       border-radius: 30px;
-      font-family: 'Roboto', sans-serif;
       font-weight: bold;
-      font-size: 1rem;
       cursor: pointer;
-      transition: 0.3s;
     }
     @media (min-width: 769px) {
       .btn-login-mini { top: 10%; left: 5%; }
@@ -222,8 +184,6 @@
     @media (max-width: 720px) {
       .btn-login-mini { bottom: 20px; right: 20px; }
     }
-    .btn-login-mini:hover { background: #b77de0; transform: scale(1.05); }
-
     .user-info-area {
       position: fixed;
       z-index: 9999;
@@ -242,7 +202,7 @@
       .user-info-area { bottom: 20px; right: 20px; }
     }
     .user-info-area span { color: #c88df8; }
-    .user-info-area .cerrar-sesion {
+    .cerrar-sesion {
       background: transparent;
       border: 1px solid #c88df8;
       color: #c88df8;
@@ -250,8 +210,6 @@
       border-radius: 30px;
       cursor: pointer;
     }
-
-    /* Modal */
     .modal-login {
       position: fixed;
       top: 0; left: 0;
@@ -270,7 +228,6 @@
       width: 280px;
       text-align: center;
       border: 1px solid #c88df8;
-      position: relative;
     }
     .modal-content h3 {
       font-family: 'Starborn', serif;
@@ -282,7 +239,6 @@
       padding: 8px;
       margin: 8px 0;
       border-radius: 30px;
-      border: 1px solid #aaa;
       background: #222;
       color: white;
     }
@@ -293,19 +249,14 @@
       border-radius: 30px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
     }
     .close-modal {
-      position: absolute;
-      top: 10px;
-      right: 15px;
+      float: right;
       font-size: 24px;
       cursor: pointer;
-      color: white;
     }
-    .close-modal:hover { color: #c88df8; }
 
-    /* ===== BUZÓN: mensajes y formulario ===== */
+    /* ===== BUZÓN ===== */
     .mensajes-lista {
       max-height: 400px;
       overflow-y: auto;
@@ -321,34 +272,97 @@
       margin-bottom: 10px;
       border-left: 3px solid #c88df8;
     }
-    .mensaje-fecha { font-size: 0.9rem; color: #c88df8; margin-bottom: 5px; }
-    .mensaje-ip { font-size: 0.8rem; color: #aaa; margin-bottom: 5px; font-family: monospace; }
-    .mensaje-texto { font-size: 1.2rem; word-wrap: break-word; }
-    .formulario-mensaje {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
+    .mensaje-fecha { font-size: 0.9rem; color: #c88df8; }
+    .mensaje-ip { font-size: 0.8rem; color: #aaa; font-family: monospace; }
+    .mensaje-texto { font-size: 1rem; word-wrap: break-word; }
     .formulario-mensaje textarea {
+      width: 100%;
       padding: 12px;
       border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.3);
       background: rgba(0,0,0,0.5);
       color: white;
-      font-size: 1rem;
-      resize: vertical;
-      min-height: 80px;
     }
     .formulario-mensaje button {
-      align-self: flex-end;
+      background: #c88df8cc;
+      border: none;
       padding: 10px 30px;
       border-radius: 30px;
-      border: none;
-      background: #c88df8cc;
-      color: black;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* ===== TEMPORIZADOR ===== */
+    .timer {
+      position: absolute;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px);
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-family: 'Roboto', monospace;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #96a1f4;
+      text-align: center;
+      border: 1px solid #a492b4;
+      z-index: 15;
+      white-space: nowrap;
+    }
+    @media (min-width: 769px) {
+      .timer { top: 20px; left: 20px; }
+    }
+    @media (max-width: 720px) {
+      .timer { top: 10px; left: 10px; font-size: 0.9rem; padding: 5px 12px; }
+    }
+
+    /* ===== ACTIVIDADES Y PARTIDO ===== */
+    .actividad-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      cursor: pointer;
+      transition: 0.3s;
+      border-left: 5px solid #c88df8;
+    }
+    .actividad-card:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.02);
+    }
+    .actividad-titulo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #c88df8;
+    }
+    .actividad-desc {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+    .partido-info {
+      text-align: center;
+    }
+    .marcador {
+      font-size: 3rem;
+      font-weight: bold;
+      background: rgba(0,0,0,0.5);
+      display: inline-block;
+      padding: 15px 30px;
+      border-radius: 60px;
+      margin: 20px 0;
+    }
+    .fotos-partido {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .fotos-partido img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 15px;
+      border: 2px solid #c88df8;
     }
 
     /* ===== MEDIA QUERIES ===== */
@@ -361,117 +375,50 @@
       .titulo .anio { margin-left: 300px; }
       #boton-avisos, #boton-mundialito { flex-direction: row-reverse; }
       #boton-buzon, #boton-Actividades { flex-direction: row; }
-        #boton-avisos {
-    position: absolute;
-    top: 20%;  /* antes 10% */
-    right: 8%;
-  }
-  html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-  #boton-buzon {
-    position: absolute;
-    top: 38%;  /* antes 30% */
-    right: 8%;
-  }
-  #boton-mundialito {
-    position: absolute;
-    top: 56%;  /* antes 50% */
-    right: 8%;
-  }
-  #boton-Actividades {
-    position: absolute;
-    top: 74%;  /* antes 70% */
-    right: 8%;
-  }
-}
+      #boton-avisos { position: absolute; top: 20%; right: 8%; }
+      #boton-buzon { position: absolute; top: 38%; right: 8%; }
+      #boton-mundialito { position: absolute; top: 56%; right: 8%; }
+      #boton-Actividades { position: absolute; top: 74%; right: 8%; }
       .boton img { width: 120px; }
       .vista-secundaria { width: 60%; }
-    
-
+    }
     @media (max-width: 720px) {
       .titulo {
         top: 30%;
-        left: 10%;
+        left: 20%;
         white-space: nowrap;
       }
-      .titulo .prom { font-size: 5rem; margin-left: -10%; }
-      .titulo .anio { font-size: 4rem; left: 60px; margin-left: 35%; }
-
+      .titulo .prom { font-size: 4.5rem; margin-left: -10%; }
+      .titulo .anio { font-size: 3.5rem; margin-left: 20px; }
       #flor1 { width: 150px; top: 2%; left: 2%; }
       #flor2 { width: 100px; top: 43%; right: 60%; }
       #flor3 { width: 200px; top: -5%; left: 70%; transform: rotate(180deg); }
       #flor4 { width: 320px; bottom: -10%; right: -25%; }
-
-      .boton-icono-adelante { flex-direction: row-reverse; }
-      .boton-texto-adelante { flex-direction: row-reverse; }
-
-  #boton-avisos {
-    position: absolute;
-    top: 55%;  /* antes 55% - baja un poco */
-    right: 5%;
-  }
-  #boton-buzon {
-    position: absolute;
-    top: 63%;  /* antes 63% */
-    left: 5%;
-  }
-  #boton-mundialito {
-    position: absolute;
-    bottom: 15%;  /* antes 15% - lo subimos un poco para no pegarlo al borde */
-    right: 5%;
-  }
-  #boton-Actividades {
-    position: absolute;
-    bottom: 6%;  /* antes 6% */
-    left: 5%;
-  }
-
+      .boton-icono-adelante, .boton-texto-adelante { flex-direction: row-reverse; }
+      #boton-avisos { position: absolute; top: 55%; right: 3%; }
+      #boton-buzon { position: absolute; top: 63%; left: 10%; }
+      #boton-mundialito { position: absolute; bottom: 15%; right: 3%; }
+      #boton-Actividades { position: absolute; bottom: 4%; left: 10%; }
       .boton img { width: 70px; }
       .boton span { font-size: 2rem; }
-
-      .vista-secundaria {
-        padding: 15px;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        max-width: 95%;
-      }
-      .vista-secundaria h2 {
-        font-size: 2.5rem;
-        word-break: break-word;
-      }
-      .vista-secundaria div[style*="border-left"] {
-        word-break: break-word;
-        overflow-wrap: break-word;
-        white-space: normal;
-      }
-      .vista-secundaria div[style*="font-size:1.8rem"] {
-        font-size: 1.4rem !important;
-        word-break: break-word;
-      }
-      .vista-secundaria div[style*="font-size:1.5rem"] {
-        font-size: 1.2rem !important;
-        word-break: break-word;
-        white-space: normal;
-        line-height: 1.3;
-      }
-      .vista-secundaria p {
-        word-break: break-word;
-        white-space: normal;
-      }
+      .vista-secundaria { padding: 15px; width: 95%; margin: 20px auto; }
+      .vista-secundaria h2 { font-size: 2.5rem; }
+      .vista-secundaria div[style*="font-size:1.8rem"] { font-size: 1.4rem !important; }
+      .vista-secundaria div[style*="font-size:1.5rem"] { font-size: 1.2rem !important; }
     }
   </style>
 </head>
 <body>
+  <!-- Temporizador (fuera del splash para que se vea siempre) -->
+  <div id="timer" class="timer"></div>
+
   <!-- SPLASH -->
   <div id="splash">
     <video id="introVideo" autoplay muted playsinline>
       <source src="splash.mp4" type="video/mp4">
       <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
     </video>
-    <button class="skip-btn" onclick="ocultarSplash()">Saltar introducción</button>
+    <button class="skip-btn" onclick="ocultarSplash()">Saltar</button>
   </div>
 
   <div class="contenedor">
@@ -481,13 +428,12 @@
     <img src="FGR.png" id="flor3" class="flor levitar" alt="Flor">
     <img src="FES.png" id="flor4" class="flor levitar" alt="Flor">
 
-    <!-- VISTA PRINCIPAL (menú) -->
+    <!-- VISTA PRINCIPAL -->
     <div id="vista-principal" class="vista activa">
       <div class="titulo">
         <h1 class="prom">Prom</h1>
         <h2 class="anio">2026</h2>
       </div>
-      <!-- Botones -->
       <div id="boton-avisos" class="boton boton-icono-adelante" onclick="mostrarVista('avisos')">
         <img src="GAV.png" alt="Avisos"><span>Avisos</span>
       </div>
@@ -502,16 +448,14 @@
       </div>
     </div>
 
-    <!-- Elementos flotantes de login (fuera de las vistas) -->
+    <!-- Login flotante -->
     <button id="btn-login" class="btn-login-mini">👤 Admin</button>
     <div id="user-info-area" class="user-info-area" style="display: none;"></div>
-
-    <!-- Modal login -->
     <div id="modal-login" class="modal-login" style="display: none;">
       <div class="modal-content">
         <span class="close-modal">&times;</span>
         <h3>Acceso Admin</h3>
-        <input type="text" id="username" placeholder="Usuario" value="admin">
+        <input type="text" id="username" placeholder="Usuario">
         <input type="password" id="password" placeholder="Contraseña">
         <button id="ingresar-admin">Ingresar</button>
       </div>
@@ -522,17 +466,13 @@
       <div class="vista-secundaria">
         <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
         <h2>Avisos</h2>
-        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8; padding-left: 15px;">
+        <div style="border-left: 3px solid #c88df8; padding-left: 15px; margin-bottom: 20px;">
           <div style="font-size:1.8rem; color:#c88df8;">03/02</div>
-          <div style="font-size:1.5rem;">Se inicia el mundialito, próximamente premiación a mejor curso culturalmente</div>
+          <div>Se inicia el mundialito, próximamente premiación...</div>
         </div>
-        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8; padding-left: 15px;">
+        <div style="border-left: 3px solid #c88df8; padding-left: 15px;">
           <div style="font-size:1.8rem; color:#c88df8;">15/03</div>
-          <div style="font-size:1.5rem;">INFORMACIÓN</div>
-        </div>
-        <div style="margin-bottom: 25px; border-left: 3px solid #c88df8; padding-left: 15px;">
-          <div style="font-size:1.8rem; color:#c88df8;">20/03</div>
-          <div style="font-size:1.5rem;">INFORMACIÓN</div>
+          <div>INFORMACIÓN</div>
         </div>
       </div>
     </div>
@@ -542,7 +482,7 @@
       <div class="vista-secundaria">
         <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
         <h2>Buzón</h2>
-        <div id="mensajes-lista" class="mensajes-lista" style="display: none;"></div>
+        <div id="mensajes-lista" class="mensajes-lista"></div>
         <div class="formulario-mensaje">
           <textarea id="nuevo-mensaje" placeholder="Escribe tu mensaje anónimo (solo el admin lo verá)"></textarea>
           <button onclick="enviarMensaje()">Enviar mensaje</button>
@@ -550,39 +490,83 @@
       </div>
     </div>
 
-    <!-- VISTA CARGOS -->
+    <!-- VISTA MUNDIALITO -->
     <div id="vista-mundialito" class="vista">
       <div class="vista-secundaria">
         <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
         <h2>Mundialito</h2>
-        <p>Aqui se presentaran las actividades y eventos del mundialito</p>
+        <p>Próximos partidos y resultados.</p>
       </div>
     </div>
 
-    <!-- VISTA ACTIVIDADES -->
+    <!-- VISTA ACTIVIDADES (con tarjeta) -->
     <div id="vista-Actividades" class="vista">
       <div class="vista-secundaria">
         <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
         <h2>Actividades</h2>
-        <p>Próximos eventos y fechas importantes.</p>
+        <div class="actividad-card" onclick="mostrarVista('partido')">
+          <div class="actividad-titulo">⚽ Final 11A vs 10A</div>
+          <div class="actividad-desc">Haz clic para ver detalles, marcador y fotos del partido.</div>
+        </div>
+        <p>Más actividades próximamente...</p>
+      </div>
+    </div>
+
+    <!-- VISTA PARTIDO -->
+    <div id="vista-partido" class="vista">
+      <div class="vista-secundaria partido-info">
+        <div class="btn-volver" onclick="mostrarVista('Actividades')">← Volver a Actividades</div>
+        <h2>Final 11A vs 10A</h2>
+        <div class="marcador">3 - 2</div>
+        <p><strong>Fecha:</strong> 14 de abril, 2025 - 4:00 PM</p>
+        <p><strong>Estadio:</strong> Cancha Principal</p>
+        <h3>Goleadores:</h3>
+        <ul>
+          <li>Juan Pérez (11A) - 2 goles</li>
+          <li>Carlos López (10A) - 2 goles</li>
+          <li>Andrés Gómez (11A) - 1 gol</li>
+        </ul>
+        <h3>Fotos del partido:</h3>
+        <div class="fotos-partido">
+          <img src="https://via.placeholder.com/150?text=Foto1" alt="Foto 1">
+          <img src="https://via.placeholder.com/150?text=Foto2" alt="Foto 2">
+          <img src="https://via.placeholder.com/150?text=Foto3" alt="Foto 3">
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    // ==================== SPLASH ====================
+    // SPLASH
     function ocultarSplash() {
-      const splash = document.getElementById('splash');
-      if (splash) splash.classList.add('splash-hidden');
+      document.getElementById('splash').classList.add('splash-hidden');
     }
-    const video = document.getElementById('introVideo');
-    if (video) {
-      video.addEventListener('ended', ocultarSplash);
-      video.addEventListener('error', ocultarSplash);
+    const vid = document.getElementById('introVideo');
+    if(vid){
+      vid.addEventListener('ended', ocultarSplash);
+      vid.addEventListener('error', ocultarSplash);
     }
     setTimeout(ocultarSplash, 3000);
 
-    // ==================== ADMIN Y BUZÓN ====================
+    // TEMPORIZADOR
+    function actualizarTimer() {
+      const objetivo = new Date('April 21, 2026 07:00:00 GMT-0500');
+      const ahora = new Date();
+      const diff = objetivo - ahora;
+      if (diff <= 0) {
+        document.getElementById('timer').innerHTML = '¡Evento iniciado!';
+        return;
+      }
+      const dias = Math.floor(diff / (1000*60*60*24));
+      const horas = Math.floor((diff % (86400000)) / 3600000);
+      const minutos = Math.floor((diff % 3600000) / 60000);
+      const segundos = Math.floor((diff % 60000) / 1000);
+      document.getElementById('timer').innerHTML = `⏳ ${dias}d ${horas}h ${minutos}m ${segundos}s`;
+    }
+    setInterval(actualizarTimer, 1000);
+    actualizarTimer();
+
+    // ADMIN & BUZÓN
     const ADMIN_USER = 'Amoajp';
     const ADMIN_PASS = '+Fr4nk0-';
     let isAdmin = false;
@@ -591,7 +575,10 @@
     function cargarMensajes() {
       const stored = localStorage.getItem('mensajesBuzon');
       mensajes = stored ? JSON.parse(stored) : [];
-      guardarMensajes();
+      if(mensajes.length === 0) {
+        mensajes.push({ texto: "¡Bienvenido al buzón! Este es un mensaje de ejemplo.", fecha: new Date().toLocaleString(), ip: "Ejemplo" });
+        guardarMensajes();
+      }
     }
     function guardarMensajes() {
       localStorage.setItem('mensajesBuzon', JSON.stringify(mensajes));
@@ -605,18 +592,18 @@
     }
     async function enviarMensaje() {
       const texto = document.getElementById('nuevo-mensaje').value.trim();
-      if (!texto) return alert('Escribe un mensaje');
+      if(!texto) return alert('Escribe un mensaje');
       const ip = await obtenerIP();
       mensajes.push({ texto, fecha: new Date().toLocaleString(), ip });
       guardarMensajes();
       document.getElementById('nuevo-mensaje').value = '';
-      if (isAdmin) renderizarMensajes();
+      if(isAdmin) renderizarMensajes();
       else alert('Mensaje enviado (solo visible para el admin)');
     }
     function renderizarMensajes() {
       const lista = document.getElementById('mensajes-lista');
-      if (!lista) return;
-      if (mensajes.length === 0) {
+      if(!lista) return;
+      if(mensajes.length === 0) {
         lista.innerHTML = '<p style="text-align:center; color:#aaa;">No hay mensajes</p>';
         return;
       }
@@ -632,52 +619,37 @@
     }
 
     function actualizarUIAdmin() {
-      const btnLogin = document.getElementById('btn-login');
+      const btn = document.getElementById('btn-login');
       const userArea = document.getElementById('user-info-area');
-      if (isAdmin) {
-        btnLogin.style.display = 'none';
+      if(isAdmin) {
+        btn.style.display = 'none';
         userArea.style.display = 'flex';
-        userArea.innerHTML = `<span>👑 Admin</span>
-                              <button class="cerrar-sesion" onclick="logout()">Cerrar sesión</button>`;
-        const buzónActivo = document.getElementById('vista-buzon').classList.contains('activa');
-        if (buzónActivo) {
-          const lista = document.getElementById('mensajes-lista');
-          if (lista) {
-            lista.style.display = 'block';
-            renderizarMensajes();
-          }
+        userArea.innerHTML = `<span>👑 Admin</span><button class="cerrar-sesion" onclick="logout()">Cerrar sesión</button>`;
+        if(document.getElementById('vista-buzon').classList.contains('activa')) {
+          renderizarMensajes();
         }
       } else {
-        btnLogin.style.display = 'block';
+        btn.style.display = 'block';
         userArea.style.display = 'none';
-        const lista = document.getElementById('mensajes-lista');
-        if (lista) lista.style.display = 'none';
       }
     }
-
-    function abrirModalLogin() {
-      const modal = document.getElementById('modal-login');
-      if (modal) modal.style.display = 'flex';
+    function abrirModal() {
+      document.getElementById('modal-login').style.display = 'flex';
     }
-    function cerrarModalLogin() {
-      const modal = document.getElementById('modal-login');
-      if (modal) modal.style.display = 'none';
+    function cerrarModal() {
+      document.getElementById('modal-login').style.display = 'none';
     }
-
     function loginDesdeModal() {
       const user = document.getElementById('username').value;
       const pass = document.getElementById('password').value;
-      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+      if(user === ADMIN_USER && pass === ADMIN_PASS) {
         isAdmin = true;
-        cerrarModalLogin();
+        cerrarModal();
         actualizarUIAdmin();
-        document.getElementById('username').value = 'admin';
+        document.getElementById('username').value = '';
         document.getElementById('password').value = '';
-      } else {
-        alert('Credenciales incorrectas');
-      }
+      } else alert('Credenciales incorrectas');
     }
-
     function logout() {
       isAdmin = false;
       actualizarUIAdmin();
@@ -685,36 +657,27 @@
 
     function inicializarBuzon() {
       cargarMensajes();
-      const lista = document.getElementById('mensajes-lista');
-      if (isAdmin) {
-        lista.style.display = 'block';
-        renderizarMensajes();
-      } else {
-        lista.style.display = 'none';
-      }
+      if(isAdmin) renderizarMensajes();
     }
 
     function mostrarVista(vistaId) {
       document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
-      if (vistaId === 'principal') {
+      if(vistaId === 'principal') {
         document.getElementById('vista-principal').classList.add('activa');
       } else {
-        document.getElementById(`vista-${vistaId}`).classList.add('activa');
-        if (vistaId === 'buzon') inicializarBuzon();
+        const target = document.getElementById(`vista-${vistaId}`);
+        if(target) target.classList.add('activa');
+        if(vistaId === 'buzon') inicializarBuzon();
       }
     }
 
-    // ==================== EVENTOS AL CARGAR ====================
     window.onload = () => {
       mostrarVista('principal');
       actualizarUIAdmin();
-      document.getElementById('btn-login').onclick = abrirModalLogin;
+      document.getElementById('btn-login').onclick = abrirModal;
       document.getElementById('ingresar-admin').onclick = loginDesdeModal;
-      document.querySelector('.close-modal').onclick = cerrarModalLogin;
-      window.onclick = (e) => {
-        const modal = document.getElementById('modal-login');
-        if (e.target === modal) cerrarModalLogin();
-      };
+      document.querySelector('.close-modal').onclick = cerrarModal;
+      window.onclick = e => { if(e.target === document.getElementById('modal-login')) cerrarModal(); };
     };
   </script>
 </body>
