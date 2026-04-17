@@ -315,7 +315,7 @@
       .timer { top: 10px; left: 10px; font-size: 0.9rem; padding: 5px 12px; }
     }
 
-    /* ===== ACTIVIDADES Y PARTIDO ===== */
+    /* ===== ACTIVIDADES Y PARTIDOS ===== */
     .actividad-card {
       background: rgba(255,255,255,0.1);
       border-radius: 15px;
@@ -403,16 +403,134 @@
       .boton span { font-size: 2rem; }
       .vista-secundaria { padding: 15px; width: 95%; margin: 20px auto; }
       .vista-secundaria h2 { font-size: 2.5rem; }
-      .vista-secundaria div[style*="font-size:1.8rem"] { font-size: 1.4rem !important; }
-      .vista-secundaria div[style*="font-size:1.5rem"] { font-size: 1.2rem !important; }
     }
+    /* Lightbox para fotos */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  z-index: 20000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.lightbox .close-lightbox {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 3rem;
+  color: white;
+  cursor: pointer;
+}
+/* Tarjetas de evento en pantalla principal */
+/* Tarjeta base */
+.evento-flotante {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 12px;
+  border: 1px solid #5569a5;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  z-index: 20;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  max-width: 240px;
+}
+.evento-flotante:hover {
+  transform: scale(1.02);
+}
+.evento-flotante img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.evento-titulo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #969ced;
+  margin-bottom: 5px;
+}
+.evento-desc {
+  font-size: 0.85rem;
+  color: #ddd;
+  line-height: 1.3;
+}
+.evento-fecha {
+  font-size: 0.7rem;
+  color: #aaa;
+  margin-top: 6px;
+}
+
+/* PC */
+@media (min-width: 769px) {
+  .evento-flotante {
+    max-width: 260px;
+    padding: 15px;
+  }
+  .evento-flotante img {
+    height: 150px;
+  }
+  /* Posiciones en PC (sobrescriben las inline si usas inline también, mejor definir clases) */
+  /* Vamos a asignar posiciones con clases en lugar de inline para que media queries funcionen */
+}
+/* Móvil */
+@media (max-width: 720px) {
+  .evento-flotante {
+    max-width: 150px;
+    padding: 8px;
+  }
+  .evento-flotante img {
+    height: 90px;
+  }
+}
+/* Posiciones para eventos (PC) */
+.evento-pos-tl { top: 25%; left: 5%; }     /* arriba izquierda */
+.evento-pos-tr { top: 15%; right: 5%; }    /* arriba derecha */
+.evento-pos-bl { bottom: 25%; left: 5%; }  /* abajo izquierda */
+.evento-pos-br { bottom: 15%; right: 5%; } /* abajo derecha */
+
+/* Móvil: sobrescribimos posiciones */
+@media (max-width: 720px) {
+  .evento-pos-tl { top: 10%; left: 5%; }
+  .evento-pos-tr { top: 2%; right: 5%; }
+  .evento-pos-bl { bottom: 10%; left: 5%; }
+  .evento-pos-br { bottom: 10%; right: 5%; }
+}
+/* Posición para móvil (por defecto) */
+.evento-pos-tr {
+  top: 3%;
+  right: 5%;
+  bottom: auto;
+  left: auto;
+}
+
+/* Posición para PC (pantallas grandes) */
+@media (min-width: 769px) {
+  .evento-pos-tr {
+    bottom: 15%;      /* Cambia aquí la posición que quieras en PC */
+    left: 8%;
+    bottom: auto;
+    left: auto;
+  }
+}
   </style>
 </head>
 <body>
-  <!-- Temporizador (fuera del splash para que se vea siempre) -->
   <div id="timer" class="timer"></div>
-
-  <!-- SPLASH -->
   <div id="splash">
     <video id="introVideo" autoplay muted playsinline>
       <source src="splash.mp4" type="video/mp4">
@@ -499,45 +617,28 @@
       </div>
     </div>
 
-    <!-- VISTA ACTIVIDADES (con tarjeta) -->
+    <!-- VISTA ACTIVIDADES (contenedor dinámico) -->
     <div id="vista-Actividades" class="vista">
-      <div class="vista-secundaria">
+      <div class="vista-secundaria" id="actividades-container">
         <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
         <h2>Actividades</h2>
-        <div class="actividad-card" onclick="mostrarVista('partido')">
-          <div class="actividad-titulo">⚽ Final 11A vs 10A</div>
-          <div class="actividad-desc">Haz clic para ver detalles, marcador y fotos del partido.</div>
-        </div>
+        <div id="tarjetas-partidos"></div>
         <p>Más actividades próximamente...</p>
       </div>
     </div>
 
-    <!-- VISTA PARTIDO -->
-    <div id="vista-partido" class="vista">
-      <div class="vista-secundaria partido-info">
-        <div class="btn-volver" onclick="mostrarVista('Actividades')">← Volver a Actividades</div>
-        <h2>Final 11A vs 10A</h2>
-        <div class="marcador">3 - 1</div>
-        <p><strong>Fecha:</strong> 13 de abril, 2025 - Descansos</p>
-        <p><strong>Lugar:</strong> Cancha Principal</p>
-        <p><strong>Partido:</strong><a href="https://youtu.be/zebdtUak3oo?si=0rWrWm-byEFi0NXt" target="_blank" style="color: #c88df8; text-decoration: underline;">Link</a>
-        <h3>Goleadores:</h3>
-        <ul>
-          <li>Sebastian Mesa (11A) - 3 goles</li>
-          <li>Nicolas (10A) - 1 gol</li>
-        </ul>
-        <h3>Fotos del partido:</h3>
-        <div class="fotos-partido">
-          <img src="https://via.placeholder.com/150?text=Foto1" alt="Foto 1">
-          <img src="https://via.placeholder.com/150?text=Foto2" alt="Foto 2">
-          <img src="https://via.placeholder.com/150?text=Foto3" alt="Foto 3">
-        </div>
-      </div>
-    </div>
+    <!-- Contenedor para las vistas de partidos (se generan dinámicamente) -->
+    <div id="vistas-partidos-container"></div>
   </div>
+  
+  <!-- Lightbox -->
+<div id="lightbox" class="lightbox" onclick="cerrarLightbox()">
+  <span class="close-lightbox">&times;</span>
+  <img id="lightbox-img" src="" alt="Foto ampliada">
+</div>
 
   <script>
-    // SPLASH
+    // ==================== SPLASH ====================
     function ocultarSplash() {
       document.getElementById('splash').classList.add('splash-hidden');
     }
@@ -548,7 +649,7 @@
     }
     setTimeout(ocultarSplash, 3000);
 
-    // TEMPORIZADOR
+    // ==================== TEMPORIZADOR ====================
     function actualizarTimer() {
       const objetivo = new Date('April 21, 2026 07:00:00 GMT-0500');
       const ahora = new Date();
@@ -566,7 +667,7 @@
     setInterval(actualizarTimer, 1000);
     actualizarTimer();
 
-    // ADMIN & BUZÓN
+    // ==================== ADMIN & BUZÓN ====================
     const ADMIN_USER = 'Amoajp';
     const ADMIN_PASS = '+Fr4nk0-';
     let isAdmin = false;
@@ -660,6 +761,150 @@
       if(isAdmin) renderizarMensajes();
     }
 
+    // ==================== SISTEMA DINÁMICO DE PARTIDOS ====================
+    // Aquí defines todos los partidos. ¡Solo agrega más objetos a este array!
+    const partidos = [
+      {
+        id: "partido1",
+        titulo: "Final 11A vs 10A-B",
+        marcador: "3 - 1",
+        fecha: "13 de abril, 2025 - Descansos",
+        lugar: "Cancha Principal",
+        linkVideo: "https://youtu.be/zebdtUak3oo?si=0rWrWm-byEFi0NXt",
+        goleadores: [
+          "Sebastian Mesa (11A) - 3 goles",
+          "Nicolas (10A-B) - 1 gol"
+        ],
+        fotos: [
+          "https://via.placeholder.com/150?text=Foto1",
+          "https://via.placeholder.com/150?text=Foto2",
+          "https://via.placeholder.com/150?text=Foto3"
+        ]
+      },
+      {
+        id: "partido2",
+        titulo: "Final 10A-B vs PROFES",
+        marcador: "4 - 1",
+        fecha: "16 de abril, 2025 - Descansos",
+        lugar: "Cancha Principal",
+        videoFile:"Futfem1.mp4",
+        goleadores: [
+          "Ibeth Natalia (Profe) - 2 goles",
+          "Honey (10A-B) - 1 gol",
+          "Nilce (Profe) - 1 gol",
+          "Angelica (Profe) - 1 gol"
+        ],
+        fotos: [
+          "fem1.jpeg",
+          "fem2.jpeg",
+          "fem3.jpeg"
+        ]
+      }
+      // Agrega aquí más partidos siguiendo el mismo formato
+    ];
+
+    // Genera las tarjetas en la vista de Actividades
+    function generarTarjetas() {
+      const contenedor = document.getElementById('tarjetas-partidos');
+      if(!contenedor) return;
+      let html = '';
+      partidos.forEach(partido => {
+        html += `
+          <div class="actividad-card" onclick="mostrarVistaPartido('${partido.id}')">
+            <div class="actividad-titulo">⚽ ${partido.titulo}</div>
+            <div class="actividad-desc">Haz clic para ver detalles, marcador y fotos del partido.</div>
+          </div>
+        `;
+      });
+      contenedor.innerHTML = html;
+    }
+
+    // Genera las vistas de cada partido dinámicamente y las inserta en el contenedor
+   function generarVistasPartidos() {
+  const container = document.getElementById('vistas-partidos-container');
+  if(!container) return;
+  let html = '';
+  partidos.forEach(partido => {
+    // Goleadores
+    let goleadoresHtml = '<ul>';
+    if(partido.goleadores && partido.goleadores.length) {
+      partido.goleadores.forEach(g => { goleadoresHtml += `<li>${g}</li>`; });
+    } else {
+      goleadoresHtml = '<p>No hay información de goleadores.</p>';
+    }
+    goleadoresHtml += '</ul>';
+
+    // Fotos con evento click para lightbox
+    let fotosHtml = '';
+    if(partido.fotos && partido.fotos.length) {
+      partido.fotos.forEach(fotoUrl => {
+        fotosHtml += `<img src="${fotoUrl}" alt="Foto del partido" style="cursor: pointer; transition: transform 0.2s;" onclick="abrirLightbox('${fotoUrl}')">`;
+      });
+    } else {
+      fotosHtml = '<p>No hay fotos disponibles.</p>';
+    } 
+
+    // Video: priorizar videoFile si existe, sino linkVideo
+    let videoHtml = '';
+    if (partido.videoFile) {
+      // Archivo de video local o URL
+      videoHtml = `
+        <div style="margin: 20px 0;">
+          <video width="100%" controls>
+            <source src="${partido.videoFile}" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+          </video>
+        </div>
+      `;
+    } else if (partido.linkVideo) {
+      // Enlace externo (YouTube u otro)
+      if (partido.linkVideo.includes('youtu.be') || partido.linkVideo.includes('youtube.com')) {
+        let videoId = '';
+        if (partido.linkVideo.includes('youtu.be')) {
+          videoId = partido.linkVideo.split('/').pop().split('?')[0];
+        } else if (partido.linkVideo.includes('watch?v=')) {
+          videoId = partido.linkVideo.split('v=')[1].split('&')[0];
+        }
+        if (videoId) {
+          videoHtml = `<div style="margin:20px 0"><iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+        } else {
+          videoHtml = `<p><strong>Video:</strong> <a href="${partido.linkVideo}" target="_blank" style="color:#c88df8;">Ver video (enlace externo)</a></p>`;
+        }
+      } else {
+        videoHtml = `<p><strong>Video:</strong> <a href="${partido.linkVideo}" target="_blank" style="color:#c88df8;">Ver video</a></p>`;
+      }
+    }
+
+    html += `
+      <div id="vista-${partido.id}" class="vista">
+        <div class="vista-secundaria partido-info">
+          <div class="btn-volver" onclick="mostrarVista('Actividades')">← Volver a Actividades</div>
+          <h2>${partido.titulo}</h2>
+          <div class="marcador">${partido.marcador}</div>
+          <p><strong>Fecha:</strong> ${partido.fecha}</p>
+          <p><strong>Lugar:</strong> ${partido.lugar}</p>
+          ${videoHtml}
+          <h3>Goleadores:</h3>
+          ${goleadoresHtml}
+          <h3>Fotos del partido:</h3>
+          <div class="fotos-partido">${fotosHtml}</div>
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+    // Función para mostrar una vista de partido específica
+    function mostrarVistaPartido(partidoId) {
+      // Ocultar todas las vistas
+      document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+      // Mostrar la vista del partido
+      const target = document.getElementById(`vista-${partidoId}`);
+      if(target) target.classList.add('activa');
+    }
+
+    // ==================== NAVEGACIÓN GENERAL ====================
     function mostrarVista(vistaId) {
       document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
       if(vistaId === 'principal') {
@@ -671,7 +916,57 @@
       }
     }
 
+    function abrirLightbox(url) {
+  const lightbox = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  img.src = url;
+  lightbox.style.display = 'flex';
+}
+function cerrarLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+}
+// Eventos especiales que aparecerán en la pantalla principal
+const eventosEspeciales = [
+  {
+    id: "decoracion",
+    titulo: "🎨 Día de Decoración",
+    descripcion: "Hoy todo el día decoramos el salón. ¡Trae tu creatividad!",
+    fecha: "2025-04-17",          // Puedes usar hoy o cualquier fecha
+    posicionClase: "evento-pos-tr"  // Esquina superior izquierda
+  },
+  // {
+  //   titulo: "Otro evento",
+  //   descripcion: "Descripción",
+  //   imagen: "otra.jpg",
+  //   posicion: { bottom: "20%", right: "5%" }
+  // }
+];
+function mostrarEventosFlotantes() {
+  const contenedor = document.getElementById('vista-principal');
+  if (!contenedor) return;
+  document.querySelectorAll('.evento-flotante').forEach(el => el.remove());
+
+  eventosEspeciales.forEach(evento => {
+    const tarjeta = document.createElement('div');
+    tarjeta.className = 'evento-flotante';
+    tarjeta.classList.add(evento.posicionClase); // asigna la clase de posición
+    // Al hacer clic en la imagen: abre lightbox
+    // Al hacer clic en la tarjeta (excepto imagen): muestra alerta
+    tarjeta.innerHTML = `
+      <div class="evento-titulo">${evento.titulo}</div>
+      <div class="evento-desc">${evento.descripcion}</div>
+      <div class="evento-fecha">📅 ${evento.fecha}</div>
+    `;
+    tarjeta.onclick = () => alert(`📌 ${evento.titulo}\n${evento.descripcion}`);
+    contenedor.appendChild(tarjeta);
+  });
+}
+
+    // ==================== INICIALIZACIÓN ====================
     window.onload = () => {
+      mostrarEventosFlotantes();
+      generarTarjetas();
+      generarVistasPartidos();
       mostrarVista('principal');
       actualizarUIAdmin();
       document.getElementById('btn-login').onclick = abrirModal;
