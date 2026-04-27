@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Promoción 2026</title>
   <link rel="icon" type="image/png" href="iconm.png">
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* ===== FUENTES Y RESET ===== */
@@ -766,6 +770,57 @@
   </div>
   <script>
 
+
+    // Configuración de Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyASurmaphb_YSBx76c6D9H0ifOk2z5zJA0",
+  authDomain: "buzon-promo.firebaseapp.com",
+  projectId: "buzon-promo",
+  storageBucket: "buzon-promo.firebasestorage.app",
+  messagingSenderId: "489181805946",
+  appId: "1:489181805946:web:fcb7558501dea7d50baac3",
+  measurementId: "G-3G6ZNHPV7V"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const analytics = firebase.analytics();
+
+    let contadorVisitas = 0;
+    function registrarVisita() {
+  const hoy = new Date().toISOString().slice(0, 10); // formato YYYY-MM-DD
+  const ultimaVisita = localStorage.getItem('ultimaVisita');
+  let visitas = parseInt(localStorage.getItem('visitasMes')) || 0;
+
+  if (ultimaVisita !== hoy) {
+    // Nuevo día, aumentamos contador
+    visitas++;
+    localStorage.setItem('visitasMes', visitas);
+    localStorage.setItem('ultimaVisita', hoy);
+  }
+  contadorVisitas = visitas;
+
+  // Mostrar al admin si está logueado y está en alguna vista
+  if (isAdmin) {
+    mostrarContadorAdmin();
+  }
+}
+
+function mostrarContadorAdmin() {
+  const userArea = document.getElementById('user-info-area');
+  if (userArea && isAdmin) {
+    // Si ya existe un span con el contador, lo actualizamos, si no lo creamos
+    let contadorSpan = document.getElementById('contador-visitas');
+    if (!contadorSpan) {
+      contadorSpan = document.createElement('span');
+      contadorSpan.id = 'contador-visitas';
+      contadorSpan.style.marginLeft = '10px';
+      contadorSpan.style.fontSize = '0.8rem';
+      userArea.appendChild(contadorSpan);
+    }
+    contadorSpan.innerHTML = `👁️ ${contadorVisitas} visitas este mes`;
+  }
+}
+
    const eventosInauguracion = [
   {
     id: "inauguracion",
@@ -924,67 +979,78 @@ const avisos = [
     let isAdmin = false;
     let mensajes = [];
 
-    function cargarMensajes() {
-      const stored = localStorage.getItem('mensajesBuzon');
-      mensajes = stored ? JSON.parse(stored) : [];
-      if(mensajes.length === 0) {
-        mensajes.push({ texto: "¡Bienvenido al buzón! Este es un mensaje de ejemplo.", fecha: new Date().toLocaleString(), ip: "Ejemplo" });
-        guardarMensajes();
-      }
-    }
-    function guardarMensajes() {
-      localStorage.setItem('mensajesBuzon', JSON.stringify(mensajes));
-    }
-    async function obtenerIP() {
-      try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        return data.ip;
-      } catch { return 'No disponible'; }
-    }
-    async function enviarMensaje() {
-      const texto = document.getElementById('nuevo-mensaje').value.trim();
-      if(!texto) return alert('Escribe un mensaje');
-      const ip = await obtenerIP();
-      mensajes.push({ texto, fecha: new Date().toLocaleString(), ip });
-      guardarMensajes();
-      document.getElementById('nuevo-mensaje').value = '';
-      if(isAdmin) renderizarMensajes();
-      else alert('Mensaje enviado (solo visible para el admin)');
-    }
-    function renderizarMensajes() {
-      const lista = document.getElementById('mensajes-lista');
-      if(!lista) return;
-      if(mensajes.length === 0) {
-        lista.innerHTML = '<p style="text-align:center; color:#aaa;">No hay mensajes</p>';
-        return;
-      }
-      let html = '';
-      mensajes.forEach(m => {
-        html += `<div class="mensaje-item">
-                  <div class="mensaje-fecha">${m.fecha}</div>
-                  <div class="mensaje-ip">IP: ${m.ip}</div>
-                  <div class="mensaje-texto">${m.texto}</div>
-                </div>`;
-      });
-      lista.innerHTML = html;
-    }
+    async function cargarMensajes() {
+  // no es necesario para Firestore, pero la dejamos vacía o la usamos para algo
+}
+
+async function enviarMensaje() {
+  const texto = document.getElementById('nuevo-mensaje').value.trim();
+  if(!texto) return alert('Escribe un mensaje');
+  let ip = 'No disponible';
+  try {
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    ip = data.ip;
+  } catch(e) {}
+  await db.collection('mensajes').add({
+    texto,
+    fecha: new Date().toLocaleString(),
+    ip,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  document.getElementById('nuevo-mensaje').value = '';
+  if(isAdmin) renderizarMensajes();
+  else alert('Mensaje enviado (solo visible para el admin)');
+}
+
+async function renderizarMensajes() {
+  const lista = document.getElementById('mensajes-lista');
+  if(!lista) return;
+  const snapshot = await db.collection('mensajes').orderBy('timestamp', 'desc').get();
+  if(snapshot.empty) {
+    lista.innerHTML = '<p style="text-align:center; color:#aaa;">No hay mensajes</p>';
+    return;
+  }
+  let html = '';
+  snapshot.forEach(doc => {
+    const m = doc.data();
+    html += `<div class="mensaje-item">
+              <div class="mensaje-fecha">${m.fecha}</div>
+              <div class="mensaje-ip">IP: ${m.ip}</div>
+              <div class="mensaje-texto">${m.texto}</div>
+            </div>`;
+  });
+  lista.innerHTML = html;
+}
+
+async function inicializarBuzon() {
+  const lista = document.getElementById('mensajes-lista');
+  if(isAdmin) {
+    lista.style.display = 'block';
+    await renderizarMensajes();
+  } else {
+    lista.style.display = 'none';
+  }
+}
 
     function actualizarUIAdmin() {
-      const btn = document.getElementById('btn-login');
-      const userArea = document.getElementById('user-info-area');
-      if(isAdmin) {
-        btn.style.display = 'none';
-        userArea.style.display = 'flex';
-        userArea.innerHTML = `<span>👑 Admin</span><button class="cerrar-sesion" onclick="logout()">Cerrar sesión</button>`;
-        if(document.getElementById('vista-buzon').classList.contains('activa')) {
-          renderizarMensajes();
-        }
-      } else {
-        btn.style.display = 'block';
-        userArea.style.display = 'none';
-      }
+  const btn = document.getElementById('btn-login');
+  const userArea = document.getElementById('user-info-area');
+  if (isAdmin) {
+    btn.style.display = 'none';
+    userArea.style.display = 'flex';
+    userArea.innerHTML = `<span>👑 Admin</span><button class="cerrar-sesion" onclick="logout()">Cerrar sesión</button>`;
+    mostrarContadorAdmin();          // <-- muestra las visitas
+    if (document.getElementById('vista-buzon').classList.contains('activa')) {
+      renderizarMensajes();
     }
+  } else {
+    btn.style.display = 'block';
+    userArea.style.display = 'none';
+    const contadorSpan = document.getElementById('contador-visitas');
+    if (contadorSpan) contadorSpan.remove();
+  }
+}
     function abrirModal() {
       document.getElementById('modal-login').style.display = 'flex';
     }
@@ -1005,10 +1071,6 @@ const avisos = [
     function logout() {
       isAdmin = false;
       actualizarUIAdmin();
-    }
-    function inicializarBuzon() {
-      cargarMensajes();
-      if(isAdmin) renderizarMensajes();
     }
 // PROGRAMACIÓN (eventos futuros)
 const programacion = [
@@ -1213,6 +1275,8 @@ const programacion = [
 
     // ==================== INICIALIZACIÓN ====================
     window.onload = () => {
+      registrarVisita();
+      pedirNotificacion();
       generarVistaInauguracion();
       mostrarCardInauguracion(); 
       cargarAvisos();
@@ -1232,6 +1296,22 @@ const programacion = [
       document.querySelector('.close-modal').onclick = cerrarModal;
       window.onclick = e => { if(e.target === document.getElementById('modal-login')) cerrarModal(); };
     };
+  // NOTIFICACIONES
+function pedirNotificacion() {
+  if (!("Notification" in window)) {
+    console.log("Este navegador no soporta notificaciones");
+    return;
+  }
+  if (Notification.permission === "granted") {
+    new Notification("🎉 Promoción 2026", { body: "¡Bienvenido! Revisa los avisos y actividades." });
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        new Notification("🎉 Promoción 2026", { body: "¡Notificaciones activadas! Te avisaremos de novedades." });
+      }
+    });
+  }
+}
   </script>
 </body>
 </html>
