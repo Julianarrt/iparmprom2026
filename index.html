@@ -6,7 +6,6 @@
   <title>Promoción 2026</title>
   <link rel="icon" type="image/png" href="iconm.png">
   <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -770,7 +769,6 @@
   </div>
   <script>
 
-
     // Configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyASurmaphb_YSBx76c6D9H0ifOk2z5zJA0",
@@ -783,7 +781,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const analytics = firebase.analytics();
 
     let contadorVisitas = 0;
     function registrarVisita() {
