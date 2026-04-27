@@ -292,29 +292,6 @@
       margin-top: 10px;
     }
 
-    /* ===== TEMPORIZADOR ===== */
-    .timer {
-      position: absolute;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(5px);
-      padding: 10px 18px;
-      border-radius: 50px;
-      font-family: 'Roboto', monospace;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #96a1f4;
-      text-align: center;
-      border: 1px solid #a492b4;
-      z-index: 15;
-      white-space: nowrap;
-    }
-    @media (min-width: 769px) {
-      .timer { top: 20px; left: 20px; }
-    }
-    @media (max-width: 720px) {
-      .timer { top: 10px; left: 10px; font-size: 0.9rem; padding: 5px 12px; }
-    }
-
     /* ===== ACTIVIDADES Y PARTIDOS ===== */
     .actividad-card {
       background: rgba(255,255,255,0.1);
@@ -363,15 +340,125 @@
       object-fit: cover;
       border-radius: 15px;
       border: 2px solid #c88df8;
+      cursor: pointer;
+    }
+
+    /* ===== EVENTOS FLOTANTES ===== */
+    .evento-flotante {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 12px;
+      border: 1px solid #5569a5;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+      z-index: 20;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      max-width: 240px;
+    }
+    .evento-flotante:hover { transform: scale(1.02); }
+    .evento-flotante img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .evento-titulo {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #969ced;
+      margin-bottom: 5px;
+    }
+    .evento-desc {
+      font-size: 0.85rem;
+      color: #ddd;
+      line-height: 1.3;
+    }
+    .evento-fecha {
+      font-size: 0.7rem;
+      color: #aaa;
+      margin-top: 6px;
+    }
+
+    /* Posiciones para eventos (PC y móvil) */
+    .evento-pos-tr {
+      top: 3%;
+      right: 5%;
+      bottom: auto;
+      left: auto;
+    }
+    @media (min-width: 769px) {
+      .evento-flotante { max-width: 260px; padding: 15px; }
+      .evento-flotante img { height: 150px; }
+      .evento-pos-tr { bottom: 15%; left: 8%; top: auto; right: auto; }
+    }
+    @media (max-width: 720px) {
+      .evento-flotante { max-width: 150px; padding: 8px; }
+      .evento-flotante img { height: 90px; }
+      .evento-pos-tr { top: 2%; right: 5%; }
+    }
+
+    /* Selector de torneos */
+    .selector-torneos {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .btn-torneo {
+      background: rgba(200,141,248,0.3);
+      border: 1px solid #c88df8;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: 0.3s;
+    }
+    .btn-torneo.activo {
+      background: #c88df8;
+      color: black;
+      font-weight: bold;
+    }
+    .btn-torneo:hover {
+      background: #c88df8cc;
+      color: black;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 20000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .lightbox .close-lightbox {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      font-size: 3rem;
+      color: white;
+      cursor: pointer;
     }
 
     /* ===== MEDIA QUERIES ===== */
     @media (min-width: 769px) {
-      .titulo {
-        top: 38%;
-        left: 12%;
-        text-align: left;
-      }
+      .titulo { top: 38%; left: 12%; text-align: left; }
       .titulo .anio { margin-left: 300px; }
       #boton-avisos, #boton-mundialito { flex-direction: row-reverse; }
       #boton-buzon, #boton-Actividades { flex-direction: row; }
@@ -380,14 +467,10 @@
       #boton-mundialito { position: absolute; top: 56%; right: 8%; }
       #boton-Actividades { position: absolute; top: 74%; right: 8%; }
       .boton img { width: 120px; }
-      .vista-secundaria { width: 60%; }
+      .vista-secundaria { width: 60%; margin: 40px auto; }
     }
     @media (max-width: 720px) {
-      .titulo {
-        top: 30%;
-        left: 20%;
-        white-space: nowrap;
-      }
+      .titulo { top: 30%; left: 20%; white-space: nowrap; }
       .titulo .prom { font-size: 4.5rem; margin-left: -10%; }
       .titulo .anio { font-size: 3.5rem; margin-left: 20px; }
       #flor1 { width: 150px; top: 2%; left: 2%; }
@@ -401,136 +484,180 @@
       #boton-Actividades { position: absolute; bottom: 4%; left: 10%; }
       .boton img { width: 70px; }
       .boton span { font-size: 2rem; }
-      .vista-secundaria { padding: 15px; width: 95%; margin: 20px auto; }
-      .vista-secundaria h2 { font-size: 2.5rem; }
+      .vista-secundaria { 
+        padding: 15px; 
+        width: 95%; 
+        margin: 20px auto; 
+      }
+      .vista-secundaria h2 { font-size: 2rem; }
+      .vista {
+        padding-top: 20px; /* evita que el contenido quede muy arriba */
+      }
     }
-    /* Lightbox para fotos */
-.lightbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.9);
-  z-index: 20000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+       /* Estilos para avisos dinámicos */
+      .aviso-item {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      border-left: 5px solid #c88df8;
+      transition: 0.3s;
+      backdrop-filter: blur(2px);
+     }
+      .aviso-item:hover {
+      background: rgba(255,255,255,0.15);
+      transform: translateX(5px);
+     }
+      .aviso-destacado {
+      background: rgba(200,141,248,0.2);
+      border-left: 5px solid #ffd966;
+      box-shadow: 0 0 12px rgba(200,141,248,0.3);
+     }
+      .aviso-fecha {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ffd966;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+     }
+      .aviso-titulo {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #c88df8;
+      margin-bottom: 10px;
+     }
+      .aviso-desc {
+      font-size: 1.1rem;
+      line-height: 1.4;
+      color: #ddd;
+     }
+      .aviso-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: #ffd966;
+      text-decoration: none;
+      font-weight: bold;
+      border-bottom: 1px dashed;
+     }
+      .aviso-link:hover {
+      color: white;
+     }
+
+     /* Estilos para la programación */
+.agenda-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-.lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
-  border-radius: 10px;
-}
-.lightbox .close-lightbox {
-  position: absolute;
-  top: 20px;
-  right: 40px;
-  font-size: 3rem;
-  color: white;
-  cursor: pointer;
-}
-/* Tarjetas de evento en pantalla principal */
-/* Tarjeta base */
-.evento-flotante {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
+.evento-agenda {
+  background: rgba(255,255,255,0.08);
   border-radius: 20px;
-  padding: 12px;
-  border: 1px solid #5569a5;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-  z-index: 20;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-  max-width: 240px;
+  padding: 18px;
+  border-left: 5px solid #ffd966;
+  transition: 0.3s;
 }
-.evento-flotante:hover {
-  transform: scale(1.02);
+.evento-agenda:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.01);
 }
-.evento-flotante img {
-  width: 100%;
-  height: 110px;
-  object-fit: cover;
-  border-radius: 14px;
-  margin-bottom: 8px;
-  cursor: pointer;
-}
-.evento-titulo {
-  font-size: 1.2rem;
+.evento-agenda-fecha {
+  font-size: 0.9rem;
+  color: #ffd966;
   font-weight: bold;
-  color: #969ced;
+  margin-bottom: 8px;
+}
+.evento-agenda-titulo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #c88df8;
   margin-bottom: 5px;
 }
-.evento-desc {
-  font-size: 0.85rem;
-  color: #ddd;
-  line-height: 1.3;
-}
-.evento-fecha {
-  font-size: 0.7rem;
+.evento-agenda-lugar {
+  font-size: 0.9rem;
   color: #aaa;
-  margin-top: 6px;
+  margin-bottom: 10px;
+}
+.evento-agenda-desc {
+  font-size: 1rem;
+  line-height: 1.4;
 }
 
-/* PC */
-@media (min-width: 769px) {
-  .evento-flotante {
-    max-width: 260px;
-    padding: 15px;
-  }
-  .evento-flotante img {
-    height: 150px;
-  }
-  /* Posiciones en PC (sobrescriben las inline si usas inline también, mejor definir clases) */
-  /* Vamos a asignar posiciones con clases en lugar de inline para que media queries funcionen */
+.concurso-info {
+  background: rgba(200,141,248,0.2);
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
 }
-/* Móvil */
+.jurados {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+.jurado {
+  background: rgba(0,0,0,0.5);
+  padding: 8px 18px;
+  border-radius: 40px;
+  font-weight: bold;
+}
+/* Galería tipo mural (disperso) */
+.mural-fotos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+}
+.mural-fotos img {
+  width: auto;
+  max-width: 200px;
+  height: auto;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+/* Diferentes tamaños para efecto disperso */
+.mural-fotos img:nth-child(odd) {
+  transform: rotate(-2deg) scale(0.98);
+}
+.mural-fotos img:nth-child(3n) {
+  transform: rotate(3deg) scale(1.02);
+}
+.mural-fotos img:nth-child(5n) {
+  transform: rotate(-1deg) scale(0.95);
+}
+.mural-fotos img:hover {
+  transform: scale(1.05) rotate(0deg);
+  z-index: 5;
+}
 @media (max-width: 720px) {
-  .evento-flotante {
-    max-width: 150px;
-    padding: 8px;
+  .mural-fotos img {
+    max-width: 130px;
+    max-height: 120px;
   }
-  .evento-flotante img {
-    height: 90px;
-  }
-}
-/* Posiciones para eventos (PC) */
-.evento-pos-tl { top: 25%; left: 5%; }     /* arriba izquierda */
-.evento-pos-tr { top: 15%; right: 5%; }    /* arriba derecha */
-.evento-pos-bl { bottom: 25%; left: 5%; }  /* abajo izquierda */
-.evento-pos-br { bottom: 15%; right: 5%; } /* abajo derecha */
-
-/* Móvil: sobrescribimos posiciones */
-@media (max-width: 720px) {
-  .evento-pos-tl { top: 10%; left: 5%; }
-  .evento-pos-tr { top: 2%; right: 5%; }
-  .evento-pos-bl { bottom: 10%; left: 5%; }
-  .evento-pos-br { bottom: 10%; right: 5%; }
-}
-/* Posición para móvil (por defecto) */
-.evento-pos-tr {
-  top: 3%;
-  right: 5%;
-  bottom: auto;
-  left: auto;
 }
 
-/* Posición para PC (pantallas grandes) */
-@media (min-width: 769px) {
-  .evento-pos-tr {
-    bottom: 15%;      /* Cambia aquí la posición que quieras en PC */
-    left: 8%;
-    bottom: auto;
-    left: auto;
-  }
+.concurso-info {
+  background: rgba(200,141,248,0.15);
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid rgba(200,141,248,0.3);
+}
+.concurso-info ul {
+  text-align: left;
+  margin: 10px auto;
+  display: inline-block;
 }
   </style>
 </head>
 <body>
-  <div id="timer" class="timer"></div>
+  <!-- SPLASH -->
   <div id="splash">
     <video id="introVideo" autoplay muted playsinline>
       <source src="splash.mp4" type="video/mp4">
@@ -580,26 +707,19 @@
     </div>
 
     <!-- VISTA AVISOS -->
-    <div id="vista-avisos" class="vista">
-      <div class="vista-secundaria">
-        <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
-        <h2>Avisos</h2>
-        <div style="border-left: 3px solid #c88df8; padding-left: 15px; margin-bottom: 20px;">
-          <div style="font-size:1.8rem; color:#c88df8;">03/02</div>
-          <div>Se inicia el mundialito, próximamente premiación...</div>
-        </div>
-        <div style="border-left: 3px solid #c88df8; padding-left: 15px;">
-          <div style="font-size:1.8rem; color:#c88df8;">15/03</div>
-          <div>INFORMACIÓN</div>
-        </div>
-      </div>
-    </div>
+  <div id="vista-avisos" class="vista">
+  <div class="vista-secundaria">
+    <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
+    <h2>Avisos</h2>
+    <div id="contenedor-avisos"></div>
+  </div>
+</div>
 
     <!-- VISTA BUZÓN -->
     <div id="vista-buzon" class="vista">
       <div class="vista-secundaria">
         <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
-        <h2>Buzón</h2>
+        <h2>Buzon</h2>
         <div id="mensajes-lista" class="mensajes-lista"></div>
         <div class="formulario-mensaje">
           <textarea id="nuevo-mensaje" placeholder="Escribe tu mensaje anónimo (solo el admin lo verá)"></textarea>
@@ -610,34 +730,183 @@
 
     <!-- VISTA MUNDIALITO -->
     <div id="vista-mundialito" class="vista">
-      <div class="vista-secundaria">
-        <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
-        <h2>Mundialito</h2>
-        <p>Próximos partidos y resultados.</p>
-      </div>
-    </div>
-
-    <!-- VISTA ACTIVIDADES (contenedor dinámico) -->
-    <div id="vista-Actividades" class="vista">
-      <div class="vista-secundaria" id="actividades-container">
-        <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
-        <h2>Actividades</h2>
-        <div id="tarjetas-partidos"></div>
-        <p>Más actividades próximamente...</p>
-      </div>
-    </div>
-
-    <!-- Contenedor para las vistas de partidos (se generan dinámicamente) -->
-    <div id="vistas-partidos-container"></div>
+  <div class="vista-secundaria">
+    <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
+    <h2>Mundialito - Julian Narvaez</h2>
+    <!-- Aquí se cargará la burbuja (card) de inauguración -->
+    <div id="contenedor-inauguracion"></div>
   </div>
-  
-  <!-- Lightbox -->
-<div id="lightbox" class="lightbox" onclick="cerrarLightbox()">
-  <span class="close-lightbox">&times;</span>
-  <img id="lightbox-img" src="" alt="Foto ampliada">
 </div>
 
+    <!-- VISTA ACTIVIDADES (con selector de torneos) -->
+    <div id="vista-Actividades" class="vista">
+      <div class="vista-secundaria">
+        <div class="btn-volver" onclick="mostrarVista('principal')">← Volver</div>
+        <h2>Actividades</h2>
+        <div class="selector-torneos">
+          <button class="btn-torneo activo" data-torneo="micro">⚽ Torneo Micro</button>
+          <button class="btn-torneo" data-torneo="volei">🏐 Torneo Voleibol</button>
+          <button class="btn-torneo" data-torneo="programacion">📅 Programación</button>
+        </div>
+        <div id="contenedor-partidos"></div>
+      </div>
+    </div>
+
+    <!-- CONTENEDOR PARA LAS VISTAS DINÁMICAS DE PARTIDOS (IMPORTANTE) -->
+    <div id="vistas-partidos-container"></div>
+    <!-- Contenedor exclusivo para las vistas de inauguración -->
+    <div id="vistas-inauguracion-container"></div>
+
+    <!-- Lightbox para fotos -->
+    <div id="lightbox" class="lightbox" onclick="cerrarLightbox()">
+      <span class="close-lightbox">&times;</span>
+      <img id="lightbox-img" src="" alt="Foto ampliada">
+    </div>
+    
+  </div>
   <script>
+
+   const eventosInauguracion = [
+  {
+    id: "inauguracion",
+    titulo: "🎉 Inauguración Mundialito",
+    descripcion: "Mira el video y las fotos del evento!",
+    tipo: "galeria",   // <-- tipo para identificar
+    video: "inauguracion.mp4",
+    fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg"]
+  },
+  {
+    id: "concurso",
+    titulo: "🎭 Concurso",
+    descripcion: "Información sobre el concurso, jurados y criterios.",
+    tipo: "concurso",
+    fecha: "Miércoles",
+    lugar: "Cada Salon",
+    jurados: ["'''", "'''", "'''"],
+    criterios: ["Creatividad", "Representatividad", "Exposicion", "Degustacion"]
+  }
+];
+
+function mostrarCardInauguracion() {
+  const contenedor = document.getElementById('contenedor-inauguracion');
+  if (!contenedor) return;
+  let html = '';
+  eventosInauguracion.forEach(evento => {
+    html += `
+      <div class="actividad-card" onclick="mostrarVistaPartido('${evento.tipo}_${evento.id}')">
+        <div class="actividad-titulo">${evento.titulo}</div>
+        <div class="actividad-desc">${evento.descripcion}</div>
+      </div>
+    `;
+  });
+  contenedor.innerHTML = html;
+}
+function generarVistaInauguracion() {
+  const container = document.getElementById('vistas-inauguracion-container');
+  if (!container) return;
+  let html = '';
+
+  eventosInauguracion.forEach(evento => {
+    if (evento.tipo === "galeria") {
+      // Vista con video y galería
+      let fotosHtml = '';
+      evento.fotos.forEach(foto => {
+        fotosHtml += `<img src="${foto}" alt="Inauguración" onclick="abrirLightbox('${foto}')" style="cursor:pointer">`;
+      });
+      let videoHtml = `<video width="100%" controls style="margin:20px 0; border-radius:20px;"><source src="${evento.video}" type="video/mp4"></video>`;
+
+      html += `
+        <div id="vista-galeria_${evento.id}" class="vista">
+          <div class="vista-secundaria">
+            <div class="btn-volver" onclick="mostrarVista('mundialito')">← Volver a Inauguración</div>
+            <h2>${evento.titulo}</h2>
+            ${videoHtml}
+            <h3 style="color:#c88df8;">📸 Recuerdos del evento</h3>
+            <div class="mural-fotos">${fotosHtml}</div>
+          </div>
+        </div>
+      `;
+    } 
+    else if (evento.tipo === "concurso") {
+      // Vista solo con información del concurso (sin video ni fotos)
+      let juradosHtml = '<div class="jurados">';
+      evento.jurados.forEach(j => {
+        juradosHtml += `<div class="jurado">👩‍⚖️ ${j}</div>`;
+      });
+      juradosHtml += '</div>';
+
+      let criteriosHtml = '<ul style="text-align:left; display:inline-block;">';
+      evento.criterios.forEach(c => {
+        criteriosHtml += `<li>${c}</li>`;
+      });
+      criteriosHtml += '</ul>';
+
+      html += `
+        <div id="vista-concurso_${evento.id}" class="vista">
+          <div class="vista-secundaria">
+            <div class="btn-volver" onclick="mostrarVista('mundialito')">← Volver a Inauguración</div>
+            <h2>${evento.titulo}</h2>
+            <div class="concurso-info" style="margin-top:0;">
+              <p>📅 <strong>${evento.fecha}</strong> - ${evento.lugar}</p>
+              <p>👥 <strong>Jurados:</strong></p>
+              ${juradosHtml}
+              <p>✨ <strong>Criterios de evaluación:</strong></p>
+              ${criteriosHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  });
+  container.innerHTML = html;
+}
+  function cargarAvisos() {
+  const contenedor = document.getElementById('contenedor-avisos');
+  if (!contenedor) return;
+  let html = '';
+  avisos.forEach(aviso => {
+    const claseDestacado = aviso.destacado ? 'aviso-destacado' : '';
+    const linkHtml = aviso.link ? `<a href="${aviso.link}" target="_blank" class="aviso-link">🔗 Ver más</a>` : '';
+    html += `
+      <div class="aviso-item ${claseDestacado}">
+        <div class="aviso-fecha">${aviso.fecha}</div>
+        <div class="aviso-titulo">${aviso.titulo}</div>
+        <div class="aviso-desc">${aviso.descripcion}</div>
+        ${linkHtml}
+      </div>
+    `;
+  });
+  contenedor.innerHTML = html;
+}
+
+    // AVISOS DINÁMICOS (puedes agregar cuantos quieras)
+const avisos = [
+  {
+    id: "aviso1",
+    titulo: "🎉 Inicio del Mundialito",
+    fecha: "03/02",
+    descripcion: "Se inicia el mundialito, próximamente premiación a mejor curso culturalmente.",
+    destacado: true,  // si es true, tendrá borde dorado y fondo más brillante
+    link: null        // opcional: si tiene URL externa
+  },
+  {
+    id: "aviso2",
+    titulo: "📢 INFORMACIÓN IMPORTANTE",
+    fecha: "15/03",
+    descripcion: "Reunión de delegados el viernes a las 2pm.",
+    destacado: false,
+    link: "https://forms.gle/ejemplo"  // enlace a formulario
+  },
+  {
+    id: "aviso3",
+    titulo: "🏆 Cierre de inscripciones",
+    fecha: "20/03",
+    descripcion: "Último día para apuntarse al torneo de baloncesto.",
+    destacado: true,
+    link: null
+  }
+  // Agrega más aquí
+];
     // ==================== SPLASH ====================
     function ocultarSplash() {
       document.getElementById('splash').classList.add('splash-hidden');
@@ -648,24 +917,6 @@
       vid.addEventListener('error', ocultarSplash);
     }
     setTimeout(ocultarSplash, 3000);
-
-    // ==================== TEMPORIZADOR ====================
-    function actualizarTimer() {
-      const objetivo = new Date('April 21, 2026 07:00:00 GMT-0500');
-      const ahora = new Date();
-      const diff = objetivo - ahora;
-      if (diff <= 0) {
-        document.getElementById('timer').innerHTML = '¡Evento iniciado!';
-        return;
-      }
-      const dias = Math.floor(diff / (1000*60*60*24));
-      const horas = Math.floor((diff % (86400000)) / 3600000);
-      const minutos = Math.floor((diff % 3600000) / 60000);
-      const segundos = Math.floor((diff % 60000) / 1000);
-      document.getElementById('timer').innerHTML = `⏳ ${dias}d ${horas}h ${minutos}m ${segundos}s`;
-    }
-    setInterval(actualizarTimer, 1000);
-    actualizarTimer();
 
     // ==================== ADMIN & BUZÓN ====================
     const ADMIN_USER = 'Amoajp';
@@ -755,15 +1006,31 @@
       isAdmin = false;
       actualizarUIAdmin();
     }
-
     function inicializarBuzon() {
       cargarMensajes();
       if(isAdmin) renderizarMensajes();
     }
-
-    // ==================== SISTEMA DINÁMICO DE PARTIDOS ====================
-    // Aquí defines todos los partidos. ¡Solo agrega más objetos a este array!
-    const partidos = [
+// PROGRAMACIÓN (eventos futuros)
+const programacion = [
+  {
+    id: "prog1",
+    titulo: "Los autistas vs Piloamistosos",
+    fecha: "2026-04-27",
+    hora: "10:00 AM",
+    lugar: "Cancha Principal",
+    descripcion: "Primer partido del torneo!"
+  },
+  {
+    id: "prog2",
+    titulo: " Doppler Vs Chapulines",
+    fecha: "2026-04-27",
+    hora: "12:00 PM",
+    lugar: "Cancha Principal",
+    descripcion: "Quien es tu favorito?"
+  },
+];
+    // ==================== DATOS DE PARTIDOS ====================
+    const partidosMicro = [
       {
         id: "partido1",
         titulo: "Final 11A vs 10A-B",
@@ -771,15 +1038,8 @@
         fecha: "13 de abril, 2025 - Descansos",
         lugar: "Cancha Principal",
         linkVideo: "https://youtu.be/zebdtUak3oo?si=0rWrWm-byEFi0NXt",
-        goleadores: [
-          "Sebastian Mesa (11A) - 3 goles",
-          "Nicolas (10A-B) - 1 gol"
-        ],
-        fotos: [
-          "https://via.placeholder.com/150?text=Foto1",
-          "https://via.placeholder.com/150?text=Foto2",
-          "https://via.placeholder.com/150?text=Foto3"
-        ]
+        goleadores: ["Sebastian Mesa (11A) - 3 goles", "Nicolas (10A-B) - 1 gol"],
+        fotos: ["https://via.placeholder.com/150?text=Foto1", "https://via.placeholder.com/150?text=Foto2", "https://via.placeholder.com/150?text=Foto3"]
       },
       {
         id: "partido2",
@@ -787,121 +1047,146 @@
         marcador: "4 - 1",
         fecha: "16 de abril, 2025 - Descansos",
         lugar: "Cancha Principal",
-        videoFile:"Futfem1.mp4",
-        goleadores: [
-          "Ibeth Natalia (Profe) - 2 goles",
-          "Honey (10A-B) - 1 gol",
-          "Nilce (Profe) - 1 gol",
-          "Angelica (Profe) - 1 gol"
-        ],
-        fotos: [
-          "fem1.jpeg",
-          "fem2.jpeg",
-          "fem3.jpeg"
-        ]
+        videoFile: "Futfem1.mp4",
+        goleadores: ["Ibeth Natalia (Profe) - 2 goles", "Honey (10A-B) - 1 gol", "Nilce (Profe) - 1 gol", "Angelica (Profe) - 1 gol"],
+        fotos: ["fem1.jpeg", "fem2.jpeg", "fem3.jpeg"]
       }
-      // Agrega aquí más partidos siguiendo el mismo formato
     ];
 
-    // Genera las tarjetas en la vista de Actividades
-    function generarTarjetas() {
-      const contenedor = document.getElementById('tarjetas-partidos');
-      if(!contenedor) return;
-      let html = '';
-      partidos.forEach(partido => {
-        html += `
-          <div class="actividad-card" onclick="mostrarVistaPartido('${partido.id}')">
-            <div class="actividad-titulo">⚽ ${partido.titulo}</div>
-            <div class="actividad-desc">Haz clic para ver detalles, marcador y fotos del partido.</div>
-          </div>
-        `;
-      });
-      contenedor.innerHTML = html;
-    }
+    const partidosVolei = [
+      {
+        id: "volei1",
+        titulo: "Nothing",
+        marcador: "'''",
+        fecha: "XX de abril, 2XXX",
+        lugar: "Cancha",
+        goleadores: ["..."],
+        fotos: ["volei1.jpg", "volei2.jpg"]
+      }
+    ];
 
-    // Genera las vistas de cada partido dinámicamente y las inserta en el contenedor
-   function generarVistasPartidos() {
-  const container = document.getElementById('vistas-partidos-container');
-  if(!container) return;
-  let html = '';
-  partidos.forEach(partido => {
-    // Goleadores
-    let goleadoresHtml = '<ul>';
-    if(partido.goleadores && partido.goleadores.length) {
-      partido.goleadores.forEach(g => { goleadoresHtml += `<li>${g}</li>`; });
-    } else {
-      goleadoresHtml = '<p>No hay información de goleadores.</p>';
-    }
-    goleadoresHtml += '</ul>';
-
-    // Fotos con evento click para lightbox
-    let fotosHtml = '';
-    if(partido.fotos && partido.fotos.length) {
-      partido.fotos.forEach(fotoUrl => {
-        fotosHtml += `<img src="${fotoUrl}" alt="Foto del partido" style="cursor: pointer; transition: transform 0.2s;" onclick="abrirLightbox('${fotoUrl}')">`;
-      });
-    } else {
-      fotosHtml = '<p>No hay fotos disponibles.</p>';
-    } 
-
-    // Video: priorizar videoFile si existe, sino linkVideo
-    let videoHtml = '';
-    if (partido.videoFile) {
-      // Archivo de video local o URL
-      videoHtml = `
-        <div style="margin: 20px 0;">
-          <video width="100%" controls>
-            <source src="${partido.videoFile}" type="video/mp4">
-            Tu navegador no soporta la etiqueta de video.
-          </video>
+    // ==================== FUNCIONES PARA TORNEOS ====================
+    function mostrarTorneo(torneo) {
+  let contenido = "";
+  if (torneo === "programacion") {
+    // Generar agenda bonita
+    let html = `<div class="agenda-container">`;
+    programacion.forEach(evento => {
+      html += `
+        <div class="evento-agenda">
+          <div class="evento-agenda-fecha">📅 ${evento.fecha} - ${evento.hora}</div>
+          <div class="evento-agenda-titulo">${evento.titulo}</div>
+          <div class="evento-agenda-lugar">📍 ${evento.lugar}</div>
+          <div class="evento-agenda-desc">${evento.descripcion}</div>
         </div>
       `;
-    } else if (partido.linkVideo) {
-      // Enlace externo (YouTube u otro)
-      if (partido.linkVideo.includes('youtu.be') || partido.linkVideo.includes('youtube.com')) {
-        let videoId = '';
-        if (partido.linkVideo.includes('youtu.be')) {
-          videoId = partido.linkVideo.split('/').pop().split('?')[0];
-        } else if (partido.linkVideo.includes('watch?v=')) {
-          videoId = partido.linkVideo.split('v=')[1].split('&')[0];
-        }
-        if (videoId) {
-          videoHtml = `<div style="margin:20px 0"><iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
-        } else {
-          videoHtml = `<p><strong>Video:</strong> <a href="${partido.linkVideo}" target="_blank" style="color:#c88df8;">Ver video (enlace externo)</a></p>`;
-        }
-      } else {
-        videoHtml = `<p><strong>Video:</strong> <a href="${partido.linkVideo}" target="_blank" style="color:#c88df8;">Ver video</a></p>`;
-      }
-    }
-
-    html += `
-      <div id="vista-${partido.id}" class="vista">
-        <div class="vista-secundaria partido-info">
-          <div class="btn-volver" onclick="mostrarVista('Actividades')">← Volver a Actividades</div>
-          <h2>${partido.titulo}</h2>
-          <div class="marcador">${partido.marcador}</div>
-          <p><strong>Fecha:</strong> ${partido.fecha}</p>
-          <p><strong>Lugar:</strong> ${partido.lugar}</p>
-          ${videoHtml}
-          <h3>Goleadores:</h3>
-          ${goleadoresHtml}
-          <h3>Fotos del partido:</h3>
-          <div class="fotos-partido">${fotosHtml}</div>
+    });
+    html += `</div>`;
+    contenido = html;
+  } else {
+    const partidos = (torneo === "micro") ? partidosMicro : partidosVolei;
+    let html = '';
+    partidos.forEach(partido => {
+      const vistaId = `${torneo}_${partido.id}`;
+      html += `
+        <div class="actividad-card" onclick="mostrarVistaPartido('${vistaId}')">
+          <div class="actividad-titulo">⚽ ${partido.titulo}</div>
+          <div class="actividad-desc">Haz clic para ver detalles, marcador y fotos.</div>
         </div>
-      </div>
-    `;
-  });
-  container.innerHTML = html;
+      `;
+    });
+    contenido = html;
+  }
+  const contenedor = document.getElementById('contenedor-partidos');
+  if (contenedor) contenedor.innerHTML = contenido;
 }
 
-    // Función para mostrar una vista de partido específica
-    function mostrarVistaPartido(partidoId) {
-      // Ocultar todas las vistas
+    function generarVistasPartidos() {
+      const container = document.getElementById('vistas-partidos-container');
+      if (!container) return;
+      let html = '';
+
+      function generarHTMLPartido(partido, prefijo) {
+        let goleadoresHtml = '<ul>';
+        partido.goleadores.forEach(g => goleadoresHtml += `<li>${g}</li>`);
+        goleadoresHtml += '</ul>';
+
+        let fotosHtml = '';
+        partido.fotos.forEach(fotoUrl => {
+          fotosHtml += `<img src="${fotoUrl}" alt="Foto" onclick="abrirLightbox('${fotoUrl}')" style="cursor:pointer">`;
+        });
+
+        let videoHtml = '';
+        if (partido.videoFile) {
+          videoHtml = `<div style="margin:20px 0"><video width="100%" controls><source src="${partido.videoFile}" type="video/mp4"></video></div>`;
+        } else if (partido.linkVideo) {
+          if (partido.linkVideo.includes('youtu.be') || partido.linkVideo.includes('youtube.com')) {
+            let videoId = '';
+            if (partido.linkVideo.includes('youtu.be')) videoId = partido.linkVideo.split('/').pop().split('?')[0];
+            else if (partido.linkVideo.includes('watch?v=')) videoId = partido.linkVideo.split('v=')[1].split('&')[0];
+            if (videoId) videoHtml = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0"></iframe>`;
+            else videoHtml = `<a href="${partido.linkVideo}" target="_blank">Ver video</a>`;
+          } else {
+            videoHtml = `<a href="${partido.linkVideo}" target="_blank">Ver video</a>`;
+          }
+        }
+
+        return `
+          <div id="vista-${prefijo}_${partido.id}" class="vista">
+            <div class="vista-secundaria partido-info">
+              <div class="btn-volver" onclick="mostrarVista('Actividades')">← Volver a Actividades</div>
+              <h2>${partido.titulo}</h2>
+              <div class="marcador">${partido.marcador}</div>
+              <p><strong>Fecha:</strong> ${partido.fecha}</p>
+              <p><strong>Lugar:</strong> ${partido.lugar}</p>
+              ${videoHtml}
+              <h3>Goleadores:</h3>
+              ${goleadoresHtml}
+              <h3>Fotos del partido:</h3>
+              <div class="fotos-partido">${fotosHtml}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      partidosMicro.forEach(p => { html += generarHTMLPartido(p, 'micro'); });
+      partidosVolei.forEach(p => { html += generarHTMLPartido(p, 'volei'); });
+
+      container.innerHTML = html;
+    }
+
+    function mostrarVistaPartido(vistaIdCompleta) {
       document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
-      // Mostrar la vista del partido
-      const target = document.getElementById(`vista-${partidoId}`);
-      if(target) target.classList.add('activa');
+      const target = document.getElementById(`vista-${vistaIdCompleta}`);
+      if (target) target.classList.add('activa');
+    }
+
+    // ==================== EVENTOS FLOTANTES ====================
+    const eventosEspeciales = [
+      {
+        id: "decoracion",
+        titulo: "🎨 Día de Decoración",
+        descripcion: "Hoy todo el día decoramos el salón. ¡Trae tu creatividad!",
+        fecha: "2025-04-17",
+        posicionClase: "evento-pos-tr"
+      }
+    ];
+
+    function mostrarEventosFlotantes() {
+      const contenedor = document.getElementById('vista-principal');
+      if (!contenedor) return;
+      document.querySelectorAll('.evento-flotante').forEach(el => el.remove());
+      eventosEspeciales.forEach(evento => {
+        const tarjeta = document.createElement('div');
+        tarjeta.className = `evento-flotante ${evento.posicionClase}`;
+        tarjeta.innerHTML = `
+          <div class="evento-titulo">${evento.titulo}</div>
+          <div class="evento-desc">${evento.descripcion}</div>
+          <div class="evento-fecha">📅 ${evento.fecha}</div>
+        `;
+        tarjeta.onclick = () => alert(`📌 ${evento.titulo}\n${evento.descripcion}`);
+        contenedor.appendChild(tarjeta);
+      });
     }
 
     // ==================== NAVEGACIÓN GENERAL ====================
@@ -917,55 +1202,29 @@
     }
 
     function abrirLightbox(url) {
-  const lightbox = document.getElementById('lightbox');
-  const img = document.getElementById('lightbox-img');
-  img.src = url;
-  lightbox.style.display = 'flex';
-}
-function cerrarLightbox() {
-  document.getElementById('lightbox').style.display = 'none';
-}
-// Eventos especiales que aparecerán en la pantalla principal
-const eventosEspeciales = [
-  {
-    id: "decoracion",
-    titulo: "🎨 Día de Decoración",
-    descripcion: "Hoy todo el día decoramos el salón. ¡Trae tu creatividad!",
-    fecha: "2025-04-17",          // Puedes usar hoy o cualquier fecha
-    posicionClase: "evento-pos-tr"  // Esquina superior izquierda
-  },
-  // {
-  //   titulo: "Otro evento",
-  //   descripcion: "Descripción",
-  //   imagen: "otra.jpg",
-  //   posicion: { bottom: "20%", right: "5%" }
-  // }
-];
-function mostrarEventosFlotantes() {
-  const contenedor = document.getElementById('vista-principal');
-  if (!contenedor) return;
-  document.querySelectorAll('.evento-flotante').forEach(el => el.remove());
-
-  eventosEspeciales.forEach(evento => {
-    const tarjeta = document.createElement('div');
-    tarjeta.className = 'evento-flotante';
-    tarjeta.classList.add(evento.posicionClase); // asigna la clase de posición
-    // Al hacer clic en la imagen: abre lightbox
-    // Al hacer clic en la tarjeta (excepto imagen): muestra alerta
-    tarjeta.innerHTML = `
-      <div class="evento-titulo">${evento.titulo}</div>
-      <div class="evento-desc">${evento.descripcion}</div>
-      <div class="evento-fecha">📅 ${evento.fecha}</div>
-    `;
-    tarjeta.onclick = () => alert(`📌 ${evento.titulo}\n${evento.descripcion}`);
-    contenedor.appendChild(tarjeta);
-  });
-}
+      const lightbox = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = url;
+      lightbox.style.display = 'flex';
+    }
+    function cerrarLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
+    }
 
     // ==================== INICIALIZACIÓN ====================
     window.onload = () => {
-      generarTarjetas();
+      generarVistaInauguracion();
+      mostrarCardInauguracion(); 
+      cargarAvisos();
       generarVistasPartidos();
+      mostrarTorneo('volei');
+      document.querySelectorAll('.btn-torneo').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.btn-torneo').forEach(b => b.classList.remove('activo'));
+          btn.classList.add('activo');
+          mostrarTorneo(btn.getAttribute('data-torneo'));
+        });
+      });
       mostrarVista('principal');
       actualizarUIAdmin();
       document.getElementById('btn-login').onclick = abrirModal;
