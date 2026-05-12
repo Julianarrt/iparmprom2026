@@ -657,6 +657,33 @@
   margin: 10px auto;
   display: inline-block;
 }
+
+.tabla-posiciones {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  overflow: hidden;
+}
+.tabla-posiciones th,
+.tabla-posiciones td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.tabla-posiciones th {
+  background: rgba(200,141,248,0.3);
+  color: #c88df8;
+}
+.btn-editar-tabla {
+  background: #c88df8cc;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 15px;
+}
   </style>
 </head>
 <body>
@@ -765,7 +792,20 @@
       <span class="close-lightbox">&times;</span>
       <img id="lightbox-img" src="" alt="Foto ampliada">
     </div>
-    
+    <!-- Modal para editar partido -->
+<div id="modal-editar-partido" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:20000; align-items:center; justify-content:center;">
+  <div style="background:#111; padding:25px; border-radius:20px; max-width:400px; border:1px solid #c88df8;">
+    <h3 style="color:#c88df8;">Editar partido</h3>
+    <label>📅 Nueva fecha:</label>
+    <input type="text" id="edit-fecha" placeholder="Ej: 30 de abril, 2026 - 3:00 PM" style="width:100%; padding:8px; margin:10px 0; border-radius:10px;">
+    <label>📍 Lugar (opcional):</label>
+    <input type="text" id="edit-lugar" placeholder="Cancha Principal" style="width:100%; padding:8px; margin:10px 0; border-radius:10px;">
+    <div style="display:flex; gap:10px; margin-top:20px;">
+      <button id="guardar-edicion" style="background:#c88df8; border:none; padding:8px 20px; border-radius:30px;">💾 Guardar</button>
+      <button id="cancelar-edicion" style="background:#333; border:none; padding:8px 20px; border-radius:30px;">Cancelar</button>
+    </div>
+  </div>
+</div>
   </div>
   <script>
 
@@ -832,7 +872,7 @@ function mostrarContadorAdmin() {
     titulo: "🎭 Concurso",
     descripcion: "Información sobre el concurso, jurados y criterios.",
     tipo: "concurso",
-    fecha: "Pospuesto",
+    fecha: "Miércoles",
     lugar: "Cada Salon",
     jurados: ["'''", "'''", "'''"],
     criterios: ["Creatividad", "Representatividad", "Exposicion", "Degustacion"]
@@ -933,7 +973,7 @@ function generarVistaInauguracion() {
 
     // AVISOS DINÁMICOS (puedes agregar cuantos quieras)
 const avisos = [
-{
+  {
     id: "aviso1",
     titulo: "🎉 Inicio del Mundialito",
     fecha: "21/04",
@@ -948,6 +988,7 @@ const avisos = [
     descripcion: "Concurso Cultural! Mas informacion en el apartado del mundialito",
     destacado: false,  // enlace a formulario
   },
+
   // Agrega más aquí
 ];
     // ==================== SPLASH ====================
@@ -1064,19 +1105,19 @@ async function inicializarBuzon() {
 const programacion = [
   {
     id: "prog1",
-    titulo: "Duendes Irlandeses vs Profesores",
-    fecha: "2026-04-30",
+    titulo: "Los autistas vs Piloamistosos",
+    fecha: "2026-04-27",
     hora: "10:00 AM",
     lugar: "Cancha Principal",
-    descripcion: "Prof o 11A?"
+    descripcion: "Primer partido del torneo!"
   },
   {
     id: "prog2",
-    titulo: " Los autistas Vs Los piloamistosos",
-    fecha: "2026-04-30",
+    titulo: " Doppler Vs Chapulines",
+    fecha: "2026-04-27",
     hora: "12:00 PM",
     lugar: "Cancha Principal",
-    descripcion: "Desempate!!"
+    descripcion: "Quien es tu favorito?"
   },
 ];
     // ==================== DATOS DE PARTIDOS ====================
@@ -1106,35 +1147,16 @@ const programacion = [
     const partidosVolei = [
       {
         id: "volei1",
-        titulo: "Los autistas vs los piloamistoso",
-        marcador: "1 - 1",
-        fecha: "28 de abril, 2026",
+        titulo: "Nothing",
+        marcador: "'''",
+        fecha: "XX de abril, 2XXX",
         lugar: "Cancha",
-        goleadores: [],
-        fotos: ["volei1.jpg", "volei2.jpg"]
-      },
-      {
-        id: "volei2",
-        titulo: "Doppler vs chapulines",
-        marcador: "2 - 0",
-        fecha: "28 de abril, 2026",
-        lugar: "Cancha",
-        goleadores: [],
-        fotos: ["volei1.jpg", "volei2.jpg"]
-      },
-      {
-        id: "volei3",
-        titulo: "La k vs 67",
-        marcador: "2 - 0",
-        fecha: "29 de abril, 2026",
-        lugar: "Cancha",
-        goleadores: [],
         fotos: ["volei1.jpg", "volei2.jpg"]
       }
     ];
 
     // ==================== FUNCIONES PARA TORNEOS ====================
-    function mostrarTorneo(torneo) {
+  async function mostrarTorneo(torneo) {
   let contenido = "";
   if (torneo === "programacion") {
     // Generar agenda bonita
@@ -1152,19 +1174,100 @@ const programacion = [
     html += `</div>`;
     contenido = html;
   } else {
-    const partidos = (torneo === "micro") ? partidosMicro : partidosVolei;
-    let html = '';
-    partidos.forEach(partido => {
-      const vistaId = `${torneo}_${partido.id}`;
-      html += `
-        <div class="actividad-card" onclick="mostrarVistaPartido('${vistaId}')">
-          <div class="actividad-titulo">⚽ ${partido.titulo}</div>
-          <div class="actividad-desc">Haz clic para ver detalles, marcador y fotos.</div>
-        </div>
-      `;
-    });
-    contenido = html;
+  let partidos = [];
+  if (torneo === 'micro') {
+    partidos = partidosMicro; // los fijos (puedes migrarlos también a Firestore después)
+  } else if (torneo === 'volei') {
+    partidos = await cargarPartidosVolei();
   }
+  let html = '';
+  for (const partido of partidos) {
+    const vistaId = `${torneo}_${partido.id}`;
+    const fechaMostrar = partido.fecha || partido.fechaOriginal || 'Fecha por definir';
+    html += `
+      <div class="actividad-card" onclick="mostrarVistaPartido('${vistaId}')">
+        <div class="actividad-titulo">⚽ ${partido.titulo}</div>
+        <div class="actividad-desc">📅 ${fechaMostrar} | ${partido.lugar}</div>
+        ${isAdmin ? `<button class="btn-editar" onclick="event.stopPropagation(); editarPartido('${torneo}', '${partido.id}')">✏️ Editar fecha</button>` : ''}
+      </div>
+    `;
+    function mostrarTorneo(torneo) {
+  let contenido = "";
+  if (torneo === "programacion") {
+    // ... agenda (igual que antes)
+  } else if (torneo === "volei") {
+    contenido = `
+      <div class="actividad-card" onclick="mostrarSubVista('volei', 'posiciones')">
+        <div class="actividad-titulo">📋 Tabla de posiciones</div>
+        <div class="actividad-desc">Clasificación actual del torneo</div>
+      </div>
+      <div class="actividad-card" onclick="mostrarSubVista('volei', 'partidos')">
+        <div class="actividad-titulo">🏐 Partidos</div>
+        <div class="actividad-desc">Calendario y resultados</div>
+      </div>
+      <div class="actividad-card" onclick="mostrarSubVista('volei', 'equipos')">
+        <div class="actividad-titulo">👥 Equipos</div>
+        <div class="actividad-desc">Lista de equipos y jugadores</div>
+      </div>
+    `;
+  }
+  contenido = html;
+}
+
+async function mostrarSubVista(torneo, subVista) {
+  let html = '';
+  if (subVista === 'posiciones') {
+    const posiciones = await cargarPosicionesVolei();
+    html = `<div class="vista-secundaria">
+      <div class="btn-volver" onclick="mostrarTorneo('volei')">← Volver</div>
+      <h2>📋 Tabla de posiciones</h2>
+      <table class="tabla-posiciones">
+        <thead><tr><th>Pos</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th><th>Pts</th></tr></thead>
+        <tbody>${posiciones.map((p, i) => `
+          <tr>
+            <td>${i+1}</td>
+            <td>${p.equipo}</td>
+            <td>${p.pj}</td>
+            <td>${p.g}</td>
+            <td>${p.p}</td>
+            <td>${p.pts}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      ${isAdmin ? `<button class="btn-editar-tabla" onclick="editarPosicionesVolei()">✏️ Editar tabla</button>` : ''}
+    </div>`;
+  } 
+  else if (subVista === 'partidos') {
+    const partidos = await cargarPartidosVolei();
+    html = `<div class="vista-secundaria">
+      <div class="btn-volver" onclick="mostrarTorneo('volei')">← Volver</div>
+      <h2>🏐 Partidos de voleibol</h2>
+      ${partidos.map(p => `
+        <div class="actividad-card" onclick="mostrarVistaPartido('volei_${p.id}')">
+          <div class="actividad-titulo">${p.equipoA} vs ${p.equipoB}</div>
+          <div class="actividad-desc">📅 ${p.fecha} | 📍 ${p.lugar} | 🏆 ${p.resultado || 'Sin jugar'}</div>
+          ${isAdmin ? `<button class="btn-editar" onclick="event.stopPropagation(); editarPartidoVolei('${p.id}')">✏️ Editar</button>` : ''}
+        </div>
+      `).join('')}
+    </div>`;
+  } 
+  else if (subVista === 'equipos') {
+    const equipos = await cargarEquiposVolei();
+    html = `<div class="vista-secundaria">
+      <div class="btn-volver" onclick="mostrarTorneo('volei')">← Volver</div>
+      <h2>👥 Equipos de voleibol</h2>
+      ${equipos.map(e => `
+        <div class="actividad-card">
+          <div class="actividad-titulo">🏐 ${e.nombre}</div>
+          <div class="actividad-desc"><strong>Jugadores:</strong> ${e.jugadores.join(', ')}</div>
+          ${isAdmin ? `<button class="btn-editar" onclick="event.stopPropagation(); editarEquipoVolei('${e.id}')">✏️ Editar equipo</button>` : ''}
+        </div>
+      `).join('')}
+    </div>`;
+  }
+  const contenedor = document.getElementById('contenedor-partidos');
+  if (contenedor) contenedor.innerHTML = html;
+}
   const contenedor = document.getElementById('contenedor-partidos');
   if (contenedor) contenedor.innerHTML = contenido;
 }
@@ -1175,47 +1278,54 @@ const programacion = [
       let html = '';
 
       function generarHTMLPartido(partido, prefijo) {
-        let goleadoresHtml = '<ul>';
-        partido.goleadores.forEach(g => goleadoresHtml += `<li>${g}</li>`);
-        goleadoresHtml += '</ul>';
+  let goleadoresHtml = '';
+  // Solo mostrar goleadores si es torneo 'micro' (fútbol)
+  if (prefijo === 'micro') {
+    goleadoresHtml = '<h3>Goleadores:</h3><ul>';
+    if (partido.goleadores && partido.goleadores.length) {
+      partido.goleadores.forEach(g => goleadoresHtml += `<li>${g}</li>`);
+    } else {
+      goleadoresHtml += '<li>No hay información de goleadores</li>';
+    }
+    goleadoresHtml += '</ul>';
+  }
 
-        let fotosHtml = '';
-        partido.fotos.forEach(fotoUrl => {
-          fotosHtml += `<img src="${fotoUrl}" alt="Foto" onclick="abrirLightbox('${fotoUrl}')" style="cursor:pointer">`;
-        });
+  let fotosHtml = '';
+  partido.fotos.forEach(fotoUrl => {
+    fotosHtml += `<img src="${fotoUrl}" alt="Foto" onclick="abrirLightbox('${fotoUrl}')" style="cursor:pointer">`;
+  });
 
-        let videoHtml = '';
-        if (partido.videoFile) {
-          videoHtml = `<div style="margin:20px 0"><video width="100%" controls><source src="${partido.videoFile}" type="video/mp4"></video></div>`;
-        } else if (partido.linkVideo) {
-          if (partido.linkVideo.includes('youtu.be') || partido.linkVideo.includes('youtube.com')) {
-            let videoId = '';
-            if (partido.linkVideo.includes('youtu.be')) videoId = partido.linkVideo.split('/').pop().split('?')[0];
-            else if (partido.linkVideo.includes('watch?v=')) videoId = partido.linkVideo.split('v=')[1].split('&')[0];
-            if (videoId) videoHtml = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0"></iframe>`;
-            else videoHtml = `<a href="${partido.linkVideo}" target="_blank">Ver video</a>`;
-          } else {
-            videoHtml = `<a href="${partido.linkVideo}" target="_blank">Ver video</a>`;
-          }
-        }
+  let videoHtml = '';
+  if (partido.videoFile) {
+    videoHtml = `<div style="margin:20px 0"><video width="100%" controls><source src="${partido.videoFile}" type="video/mp4"></video></div>`;
+  } else if (partido.linkVideo) {
+    if (partido.linkVideo.includes('youtu.be') || partido.linkVideo.includes('youtube.com')) {
+      let videoId = '';
+      if (partido.linkVideo.includes('youtu.be')) videoId = partido.linkVideo.split('/').pop().split('?')[0];
+      else if (partido.linkVideo.includes('watch?v=')) videoId = partido.linkVideo.split('v=')[1].split('&')[0];
+      if (videoId) videoHtml = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0"></iframe>`;
+      else videoHtml = `<a href="${partido.linkVideo}" target="_blank">Ver video</a>`;
+    } else {
+      videoHtml = `<a href="${partido.linkVideo}" target="_blank">Ver video</a>`;
+    }
+  }
 
-        return `
-          <div id="vista-${prefijo}_${partido.id}" class="vista">
-            <div class="vista-secundaria partido-info">
-              <div class="btn-volver" onclick="mostrarVista('Actividades')">← Volver a Actividades</div>
-              <h2>${partido.titulo}</h2>
-              <div class="marcador">${partido.marcador}</div>
-              <p><strong>Fecha:</strong> ${partido.fecha}</p>
-              <p><strong>Lugar:</strong> ${partido.lugar}</p>
-              ${videoHtml}
-              <h3>Goleadores:</h3>
-              ${goleadoresHtml}
-              <h3>Fotos del partido:</h3>
-              <div class="fotos-partido">${fotosHtml}</div>
-            </div>
-          </div>
-        `;
-      }
+  return `
+    <div id="vista-${prefijo}_${partido.id}" class="vista">
+      <div class="vista-secundaria partido-info">
+        <div class="btn-volver" onclick="mostrarVista('Actividades')">← Volver a Actividades</div>
+        <h2>${partido.titulo}</h2>
+        <div class="marcador">${partido.marcador}</div>
+        <p><strong>Fecha:</strong> ${partido.fecha}</p>
+        <p><strong>Lugar:</strong> ${partido.lugar}</p>
+        ${videoHtml}
+        ${goleadoresHtml}
+        <h3>📸 Fotos del partido:</h3>
+        <div class="fotos-partido">${fotosHtml}</div>
+      </div>
+    </div>
+  `;
+}
 
       partidosMicro.forEach(p => { html += generarHTMLPartido(p, 'micro'); });
       partidosVolei.forEach(p => { html += generarHTMLPartido(p, 'volei'); });
@@ -1228,6 +1338,111 @@ const programacion = [
       const target = document.getElementById(`vista-${vistaIdCompleta}`);
       if (target) target.classList.add('activa');
     }
+
+    // Función para cargar partidos de voleibol desde Firestore
+  async function cargarPartidosVolei() {
+  const snapshot = await db.collection('partidos').where('torneo', '==', 'volei').orderBy('fechaOriginal').get();
+  const partidos = [];
+  snapshot.forEach(doc => {
+    partidos.push({ id: doc.id, ...doc.data() });
+  });
+  return partidos;
+}
+
+async function guardarPartidoVolei(partidoData) {
+  if (!isAdmin) {
+    alert('Solo el administrador puede modificar partidos');
+    return;
+  }
+  await db.collection('partidos').doc(partidoData.id).set(partidoData);
+  alert('Partido actualizado');
+  // Recargar la vista actual si estamos en torneo volei
+  if (document.getElementById('vista-Actividades').classList.contains('activa')) {
+    const btnActivo = document.querySelector('.btn-torneo.activo');
+    if (btnActivo && btnActivo.dataset.torneo === 'volei') {
+      mostrarTorneo('volei');
+    }
+  }
+}
+
+async function cargarPosicionesVolei() {
+  const snap = await db.collection('voleiPosiciones').orderBy('pts', 'desc').get();
+  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+async function cargarPartidosVolei() {
+  const snap = await db.collection('voleiPartidos').orderBy('fechaOriginal').get();
+  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+async function cargarEquiposVolei() {
+  const snap = await db.collection('voleiEquipos').get();
+  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+async function editarPosicionesVolei() {
+  if (!isAdmin) return;
+  const posiciones = await cargarPosicionesVolei();
+  let nuevaData = prompt("Edita la tabla (formato: equipo|PJ|G|P|Pts, separados por comas)\nEjemplo: Los Pumas,3,2,1,6,Los Tigres,3,1,2,3", 
+    posiciones.map(p => `${p.equipo},${p.pj},${p.g},${p.p},${p.pts}`).join(','));
+  if (!nuevaData) return;
+  const items = nuevaData.split(',');
+  for (let i = 0; i < items.length; i += 5) {
+    const equipo = items[i];
+    const pj = parseInt(items[i+1]);
+    const g = parseInt(items[i+2]);
+    const p = parseInt(items[i+3]);
+    const pts = parseInt(items[i+4]);
+    if (equipo && !isNaN(pj) && !isNaN(g) && !isNaN(p) && !isNaN(pts)) {
+      const id = posiciones[i/5]?.id || equipo.toLowerCase().replace(/ /g, '_');
+      await db.collection('voleiPosiciones').doc(id).set({ equipo, pj, g, p, pts });
+    }
+  }
+  mostrarSubVista('volei', 'posiciones');
+  alert("Tabla actualizada");
+}
+
+async function editarPartidoVolei(partidoId) {
+  const partido = (await cargarPartidosVolei()).find(p => p.id === partidoId);
+  const nuevaFecha = prompt("Nueva fecha:", partido.fecha);
+  const nuevoResultado = prompt("Resultado (ej: 2-1):", partido.resultado || '');
+  if (nuevaFecha) await db.collection('voleiPartidos').doc(partidoId).update({ fecha: nuevaFecha });
+  if (nuevoResultado) await db.collection('voleiPartidos').doc(partidoId).update({ resultado: nuevoResultado });
+  mostrarSubVista('volei', 'partidos');
+}
+
+async function editarEquipoVolei(equipoId) {
+  const equipo = (await cargarEquiposVolei()).find(e => e.id === equipoId);
+  const nuevoNombre = prompt("Nuevo nombre del equipo:", equipo.nombre);
+  const nuevosJugadores = prompt("Jugadores (separados por coma):", equipo.jugadores.join(','));
+  if (nuevoNombre || nuevosJugadores) {
+    const update = {};
+    if (nuevoNombre) update.nombre = nuevoNombre;
+    if (nuevosJugadores) update.jugadores = nuevosJugadores.split(',').map(j => j.trim());
+    await db.collection('voleiEquipos').doc(equipoId).update(update);
+    mostrarSubVista('volei', 'equipos');
+  }
+}
+
+async function inicializarVolei() {
+  // Posiciones
+  const posiciones = [
+    { equipo: "Los Pumas", pj: 3, g: 2, p: 1, pts: 6 },
+    { equipo: "Los Tigres", pj: 3, g: 1, p: 2, pts: 3 }
+  ];
+  for (const p of posiciones) await db.collection('voleiPosiciones').doc(p.equipo.toLowerCase()).set(p);
+  // Partidos
+  const partidos = [
+    { id: "p1", equipoA: "Los Pumas", equipoB: "Los Tigres", fecha: "05/05/2026", lugar: "Cancha 1", resultado: "", fechaOriginal: new Date("2026-05-05") }
+  ];
+  for (const p of partidos) await db.collection('voleiPartidos').doc(p.id).set(p);
+  // Equipos
+  const equipos = [
+    { id: "pumas", nombre: "Los Pumas", jugadores: ["Juan", "Pedro", "Luis"] },
+    { id: "tigres", nombre: "Los Tigres", jugadores: ["Ana", "Maria", "Luisa"] }
+  ];
+  for (const e of equipos) await db.collection('voleiEquipos').doc(e.id).set(e);
+  console.log("Datos de voleibol inicializados");
+}
 
     // ==================== EVENTOS FLOTANTES ====================
     const eventosEspeciales = [
