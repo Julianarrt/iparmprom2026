@@ -1382,7 +1382,7 @@ async function cargarEquiposVolei() {
 async function editarPosicionesVolei() {
   if (!isAdmin) return;
   const posiciones = await cargarPosicionesVolei();
-  let nuevaData = prompt("Edita la tabla (formato: equipo|PJ|G|P|Pts, separados por comas)\nEjemplo: Los Pumas,3,2,1,6,Los Tigres,3,1,2,3", 
+  let nuevaData = prompt("Edita la tabla (formato: equipo|PJ|G|P|Pts, separados por comas)\nEjemplo: Duendes irlandeses,3,2,1,6,Los Tigres,3,1,2,3", 
     posiciones.map(p => `${p.equipo},${p.pj},${p.g},${p.p},${p.pts}`).join(','));
   if (!nuevaData) return;
   const items = nuevaData.split(',');
@@ -1426,18 +1426,18 @@ async function editarEquipoVolei(equipoId) {
 async function inicializarVolei() {
   // Posiciones
   const posiciones = [
-    { equipo: "Los Pumas", pj: 3, g: 2, p: 1, pts: 6 },
+    { equipo: "Duendes irlandeses", pj: 3, g: 2, p: 1, pts: 6 },
     { equipo: "Los Tigres", pj: 3, g: 1, p: 2, pts: 3 }
   ];
   for (const p of posiciones) await db.collection('voleiPosiciones').doc(p.equipo.toLowerCase()).set(p);
   // Partidos
   const partidos = [
-    { id: "p1", equipoA: "Los Pumas", equipoB: "Los Tigres", fecha: "05/05/2026", lugar: "Cancha 1", resultado: "", fechaOriginal: new Date("2026-05-05") }
+    { id: "p1", equipoA: "Duendes irlandeses", equipoB: "Los Tigres", fecha: "05/05/2026", lugar: "Cancha 1", resultado: "", fechaOriginal: new Date("2026-05-05") }
   ];
   for (const p of partidos) await db.collection('voleiPartidos').doc(p.id).set(p);
   // Equipos
   const equipos = [
-    { id: "pumas", nombre: "Los Pumas", jugadores: ["Juan", "Pedro", "Luis"] },
+    { id: "Duendes irlandeses", nombre: "Duendes irlandeses", jugadores: ["Juan", "Pedro", "Luis"] },
     { id: "tigres", nombre: "Los Tigres", jugadores: ["Ana", "Maria", "Luisa"] }
   ];
   for (const e of equipos) await db.collection('voleiEquipos').doc(e.id).set(e);
