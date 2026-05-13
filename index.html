@@ -956,10 +956,10 @@ function mostrarContadorAdmin() {
     titulo: "🎭 Concurso",
     descripcion: "Información sobre el concurso, jurados y criterios.",
     tipo: "concurso",
-    fecha: "Miércoles",
+    fecha:"jueves",
     lugar: "Cada Salon",
     jurados: ["'''", "'''", "'''"],
-    criterios: ["Creatividad", "Representatividad", "Exposicion", "Degustacion"]
+    criterios: ["Creatividad", "Representatividad", "Exposicion", "Muestra"]
   }
 ];
 
@@ -969,7 +969,7 @@ function mostrarCardInauguracion() {
   let html = '';
   eventosInauguracion.forEach(evento => {
     html += `
-      <div class="actividad-card" onclick="mostrarVistaPartido('${evento.tipo}_${evento.id}')">
+      <div class="actividad-card" onclick="mostrarVista('${evento.tipo}_${evento.id}')">
         <div class="actividad-titulo">${evento.titulo}</div>
         <div class="actividad-desc">${evento.descripcion}</div>
       </div>
@@ -1189,19 +1189,19 @@ async function inicializarBuzon() {
 const programacion = [
   {
     id: "prog1",
-    titulo: "Los autistas vs Piloamistosos",
-    fecha: "2026-04-27",
+    titulo: "Profes vs Chapulines",
+    fecha: "2026-05-14",
     hora: "10:00 AM",
     lugar: "Cancha Principal",
-    descripcion: "Primer partido del torneo!"
+    descripcion: "Cual es tu profe fav?"
   },
   {
     id: "prog2",
-    titulo: " Doppler Vs Chapulines",
-    fecha: "2026-04-27",
+    titulo: "Autistas Vs 67",
+    fecha: "2026-05-14",
     hora: "12:00 PM",
     lugar: "Cancha Principal",
-    descripcion: "Quien es tu favorito?"
+    descripcion: "Dos cosas muy similares"
   },
 ];
     // ==================== DATOS DE PARTIDOS ====================
@@ -1535,15 +1535,36 @@ function generarVistasPartidos() {
 
     // ==================== NAVEGACIÓN GENERAL ====================
     function mostrarVista(vistaId) {
-      document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
-      if(vistaId === 'principal') {
-        document.getElementById('vista-principal').classList.add('activa');
-      } else {
-        const target = document.getElementById(`vista-${vistaId}`);
-        if(target) target.classList.add('activa');
-        if(vistaId === 'buzon') inicializarBuzon();
-      }
+  document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+  if(vistaId === 'principal') {
+    document.getElementById('vista-principal').classList.add('activa');
+    return;
+  }
+  const target = document.getElementById(`vista-${vistaId}`);
+  if (target) {
+    target.classList.add('activa');
+    if(vistaId === 'buzon') inicializarBuzon();
+    if(vistaId === 'mundialito') {
+      // Regenerar vistas de mundialito por si acaso
+      generarVistaInauguracion();
+      mostrarCardInauguracion();
     }
+  } else {
+    // Si no existe, reintentar después de regenerar (para partidos)
+    if (vistaId.startsWith('galeria_') || vistaId.startsWith('concurso_')) {
+      generarVistaInauguracion();
+      setTimeout(() => {
+        const retryTarget = document.getElementById(`vista-${vistaId}`);
+        if (retryTarget) {
+          document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+          retryTarget.classList.add('activa');
+        } else {
+          console.error('No se pudo encontrar la vista:', vistaId);
+        }
+      }, 50);
+    }
+  }
+}
 
     function abrirLightbox(url) {
       const lightbox = document.getElementById('lightbox');
@@ -1577,7 +1598,18 @@ function generarVistasPartidos() {
       document.getElementById('ingresar-admin').onclick = loginDesdeModal;
       document.querySelector('.close-modal').onclick = cerrarModal;
       window.onclick = e => { if(e.target === document.getElementById('modal-login')) cerrarModal(); };
+      // Forzar regeneración después de 200ms para asegurar que el DOM esté listo
+setTimeout(() => {
+  if (typeof generarVistaInauguracion === 'function') {
+    generarVistaInauguracion();
+  }
+  if (typeof mostrarCardInauguracion === 'function') {
+    mostrarCardInauguracion();
+  }
+}, 200);
     };
+
+    // Forzar regeneración después de 200ms para asegurar que el DOM esté list
   // NOTIFICACIONES
 function pedirNotificacion() {
   if (!("Notification" in window)) {
