@@ -875,25 +875,10 @@
       <span class="close-lightbox">&times;</span>
       <img id="lightbox-img" src="" alt="Foto ampliada">
     </div>
-
-    <!-- Modal para editar partido (no usado) -->
-    <div id="modal-editar-partido" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:20000; align-items:center; justify-content:center;">
-      <div style="background:#111; padding:25px; border-radius:20px; max-width:400px; border:1px solid #c88df8;">
-        <h3 style="color:#c88df8;">Editar partido</h3>
-        <label>📅 Nueva fecha:</label>
-        <input type="text" id="edit-fecha" placeholder="Ej: 30 de abril, 2026 - 3:00 PM" style="width:100%; padding:8px; margin:10px 0; border-radius:10px;">
-        <label>📍 Lugar (opcional):</label>
-        <input type="text" id="edit-lugar" placeholder="Cancha Principal" style="width:100%; padding:8px; margin:10px 0; border-radius:10px;">
-        <div style="display:flex; gap:10px; margin-top:20px;">
-          <button id="guardar-edicion" style="background:#c88df8; border:none; padding:8px 20px; border-radius:30px;">💾 Guardar</button>
-          <button id="cancelar-edicion" style="background:#333; border:none; padding:8px 20px; border-radius:30px;">Cancelar</button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script>
-    // ==================== FIREBASE CONFIG ====================
+    // ==================== FIREBASE ====================
     const firebaseConfig = {
       apiKey: "AIzaSyASurmaphb_YSBx76c6D9H0ifOk2z5zJA0",
       authDomain: "buzon-promo.firebaseapp.com",
@@ -906,14 +891,12 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // ==================== VARIABLES GLOBALES ====================
     let contadorVisitas = 0;
     let isAdmin = false;
     const ADMIN_USER = 'Amoajp';
     const ADMIN_PASS = '+Fr4nk0-';
     let mensajes = [];
 
-    // ==================== VISITAS ====================
     function registrarVisita() {
       const hoy = new Date().toISOString().slice(0, 10);
       const ultimaVisita = localStorage.getItem('ultimaVisita');
@@ -958,7 +941,7 @@
       contenedor.innerHTML = html;
     }
 
-    // ==================== INAUGURACIÓN Y CONCURSO (MUNDIALITO) ====================
+    // ==================== INAUGURACIÓN Y CONCURSO ====================
     const eventosInauguracion = [
       { id: "inauguracion", titulo: "🎉 Inauguración Mundialito", descripcion: "Mira el video y las fotos del evento!", tipo: "galeria", video: "cupv1.mp4", fotos: ["cup1.jpeg", "cup2.jpeg", "cup3.jpeg"] },
       { id: "concurso", titulo: "🎭 Concurso", descripcion: "Información sobre el concurso, jurados y criterios.", tipo: "concurso", fecha:"jueves", lugar: "Cada Salon", jurados: ["Profe María", "Juan Pablo", "Laura"], criterios: ["Creatividad", "Representatividad", "Exposicion", "Muestra"] }
@@ -1022,7 +1005,7 @@
     function mostrarCardCopa() {
       const contenedor = document.getElementById('contenedor-copa-mundialito');
       if (!contenedor) return;
-      contenedor.innerHTML = `<div class="actividad-card" onclick="mostrarVista('copa_copa2026')"><div class="actividad-titulo">🏆 Copa Mundialito</div><div class="actividad-desc">Programación, resultados y enlace oficial</div></div>`;
+      contenedor.innerHTML = `<div class="actividad-card" onclick="mostrarVista('copa_copa2026')"><div class="actividad-titulo">🏆 Copa Mundialito</div><div class="actividad-desc">Programación, resultados y enlace oficial del torneo.</div></div>`;
     }
     async function mostrarCopaMundialito() {
       const container = document.getElementById('vistas-inauguracion-container');
@@ -1042,7 +1025,7 @@
         subcardsHtml += `<div class="actividad-card" style="border-left-color:#A7C7E7; cursor:pointer;" onclick="mostrarEquiposPorCategoria('${cat.id}','${cat.nombre}')"><div class="actividad-titulo">${cat.nombre}</div><div class="actividad-desc">Haz clic para ver los equipos</div></div>`;
       }
       subcardsHtml += '</div>';
-      let tablaHtml = partidos.length === 0 ? '<p>No hay partidos programados.</p>' : `<div style="overflow-x:auto;"><table class="tabla-posiciones" style="min-width:350px;"><thead><tr><th>Fecha</th><th>Hora</th><th>Equipo A</th><th>Equipo B</th><th>Resultado</th><th>Acciones</th></tr></thead><tbody>${partidos.map(p => `<tr><td>${p.fecha}</td><td>${p.hora}</td><td>${p.equipoA}</td><td>${p.equipoB}</td><td>${p.resultado || '—'}</td><td>${isAdmin ? `<button class="btn-editar" onclick="editarResultadoCopa('${p.id}')">✏️</button> <button class="btn-editar" onclick="eliminarPartidoCopa('${p.id}')">🗑️</button>` : ''}</td></tr>`).join('')}</tbody></table></div>`;
+      let tablaHtml = partidos.length === 0 ? '<p>No hay partidos programados.</p>' : `<div style="overflow-x:auto;"><table class="tabla-posiciones" style="min-width:350px;"><thead><tr><th>Fecha</th><th>Hora</th><th>Equipo A</th><th>Equipo B</th><th>Resultado</th><th>Acciones</th></tr></thead><tbody>${partidos.map(p => `<tr><td>${p.fecha}</td><td>${p.hora}</td><td>${p.equipoA}</td><td>${p.equipoB}</td><td>${p.resultado || '—'}</td><td>${isAdmin ? `<button class="btn-editar" onclick="editarResultadoCopa('${p.id}')">✏️</button> <button class="btn-editar" onclick="eliminarPartidoCopa('${p.id}')">🗑️</button>` : ''}</td></table>`).join('')}</tbody></table></div>`;
       let html = `<div id="vista-copa_copa2026" class="vista"><div class="vista-secundaria"><div class="btn-volver" onclick="mostrarVista('mundialito')">← Volver a Mundialito</div><h2>🏆 Copa Mundialito</h2><div class="actividad-card" style="border-left-color:#A7C7E7;"><div class="actividad-titulo">🔗 Enlace oficial</div><div class="actividad-desc"><a href="${enlace}" target="_blank" class="aviso-link">Ir al bracket / transmisión</a>${isAdmin ? `<button class="btn-editar" onclick="editarEnlaceCopa()">✏️ Editar enlace</button>` : ''}</div></div><div class="actividad-card" style="border-left-color:#A7C7E7;"><div class="actividad-titulo">📋 Clasificación por categorías</div><div class="actividad-desc">${subcardsHtml}</div></div><div class="actividad-card" style="border-left-color:#A7C7E7;"><div class="actividad-titulo">📅 Calendario de partidos</div><div class="actividad-desc">${tablaHtml}${isAdmin ? `<button class="btn-editar-tabla" onclick="agregarPartidoCopaPrompt()">➕ Agregar partido</button>` : ''}</div></div></div></div>`;
       container.innerHTML = html;
     }
@@ -1060,29 +1043,10 @@
     }
     async function editarEnlaceCopa() { const url = prompt("Nueva URL:", await cargarEnlaceCopa()); if(url) await actualizarEnlaceCopa(url); }
     async function editarResultadoCopa(id) { const res = prompt("Resultado:"); if(res !== null) await editarPartidoCopa(id, res); }
-    async function agregarPartidoCopaPrompt() {
-      const fecha = prompt("Fecha (YYYY-MM-DD):");
-      const hora = prompt("Hora:");
-      const eqA = prompt("Equipo A:");
-      const eqB = prompt("Equipo B:");
-      if (fecha && hora && eqA && eqB) await agregarPartidoCopa({ fecha, hora, equipoA: eqA, equipoB: eqB, resultado: "" });
-    }
-    function agregarEquipoPrompt(cat) {
-      const nombre = prompt("Nombre del equipo:");
-      if(!nombre) return;
-      const entrenador = prompt("Entrenador:");
-      agregarEquipoCopa(cat, nombre, entrenador).then(()=>mostrarEquiposPorCategoria(cat, obtenerNombreCategoria(cat)));
-    }
-    function editarEquipoPrompt(id, nombreActual, entrenadorActual, cat) {
-      const nuevoNombre = prompt("Nuevo nombre:", nombreActual);
-      if(!nuevoNombre && nuevoNombre !== '') return;
-      const nuevoEntrenador = prompt("Entrenador:", entrenadorActual);
-      editarEquipoCopa(id, nuevoNombre, nuevoEntrenador).then(()=>mostrarEquiposPorCategoria(cat, obtenerNombreCategoria(cat)));
-    }
-    function obtenerNombreCategoria(catId) {
-      const cats = { juvenil:'🏆 Juvenil (9 - Profes)', prejuvenil:'🥈 Prejuvenil (6 - 8)', infantil:'🥉 Infantil (4 - 5)', preinfantil:'🌟 Pre infantil (2 - 3)' };
-      return cats[catId] || catId;
-    }
+    async function agregarPartidoCopaPrompt() { const fecha = prompt("Fecha (YYYY-MM-DD):"); const hora = prompt("Hora:"); const eqA = prompt("Equipo A:"); const eqB = prompt("Equipo B:"); if (fecha && hora && eqA && eqB) await agregarPartidoCopa({ fecha, hora, equipoA: eqA, equipoB: eqB, resultado: "" }); }
+    function agregarEquipoPrompt(cat) { const nombre = prompt("Nombre del equipo:"); if(!nombre) return; const entrenador = prompt("Entrenador:"); agregarEquipoCopa(cat, nombre, entrenador).then(()=>mostrarEquiposPorCategoria(cat, obtenerNombreCategoria(cat))); }
+    function editarEquipoPrompt(id, nombreActual, entrenadorActual, cat) { const nuevoNombre = prompt("Nuevo nombre:", nombreActual); if(!nuevoNombre && nuevoNombre !== '') return; const nuevoEntrenador = prompt("Entrenador:", entrenadorActual); editarEquipoCopa(id, nuevoNombre, nuevoEntrenador).then(()=>mostrarEquiposPorCategoria(cat, obtenerNombreCategoria(cat))); }
+    function obtenerNombreCategoria(catId) { const cats = { juvenil:'🏆 Juvenil (9 - Profes)', prejuvenil:'🥈 Prejuvenil (6 - 8)', infantil:'🥉 Infantil (4 - 5)', preinfantil:'🌟 Pre infantil (2 - 3)' }; return cats[catId] || catId; }
 
     // ==================== BUZÓN ====================
     async function enviarMensaje() {
@@ -1106,7 +1070,7 @@
     }
     async function inicializarBuzon() { const lista = document.getElementById('mensajes-lista'); if(isAdmin) { lista.style.display = 'block'; await renderizarMensajes(); } else lista.style.display = 'none'; }
 
-    // ==================== TORNEOS (Micro y Voleibol) ====================
+    // ==================== TORNEOS ====================
     const programacion = [ { id: "prog1", titulo: "Los autistas vs 67", fecha: "2026-05-19", hora: "10:00 AM", lugar: "Cancha Principal", descripcion: "---" } ];
     const partidosMicro = [
       { id: "partido1", titulo: "Final 11A vs 10A-B", marcador: "3 - 1", fecha: "13/04/2025", lugar: "Cancha Principal", linkVideo: "https://youtu.be/zebdtUak3oo", goleadores: ["Sebastian Mesa (11A) - 3", "Nicolas (10A-B) - 1"], fotos: ["foto1.jpg","foto2.jpg"] },
@@ -1186,7 +1150,7 @@
       if (target) target.classList.add('activa');
     }
 
-    // ==================== LOGIN ADMIN ====================
+    // ==================== ADMIN LOGIN ====================
     function actualizarUIAdmin() {
       const btn = document.getElementById('btn-login');
       const userArea = document.getElementById('user-info-area');
